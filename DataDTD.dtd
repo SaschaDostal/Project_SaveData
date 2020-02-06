@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT Data ((Game|Series)*)>
+<!ELEMENT Data ((Game|Series|Movie)*)>
     <!ELEMENT Game (GName, GPlatform, GStatus)>
 	   <!ELEMENT GName (#PCDATA)>
 	   <!ELEMENT GPlatform (#PCDATA)>
@@ -9,3 +9,7 @@
        <!ELEMENT SPlatform (#PCDATA)>
 	   <!ELEMENT Seasons (#PCDATA)>
 	   <!ELEMENT SStatus (#PCDATA)>
+	<!ELEMENT Movie (MName, Suggested, MStatus)>
+       <!ELEMENT MName (#PCDATA)>
+       <!ELEMENT Suggested (#PCDATA)>
+       <!ELEMENT MStatus (#PCDATA)>

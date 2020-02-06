@@ -78,7 +78,34 @@ public class DataHandler {
                 }
             }
             return content;
-        } else if(type.contentEquals("Series")){
+        } else if(type.equals("Movie")) {
+            String[] allNames = getElements("MName");
+            String[] allPlats = getElements("Suggested");
+            String[] allStats = getElements("MStatus");
+            for(int i = 0; i < allNames.length; i++) {
+                if (allStats[i].equals("Finished") && isTrue){
+                    counter++;
+                } else if (!allStats[i].equals("Finished") && !isTrue){
+                    counter++;
+                }
+            }
+            content = new String[counter][3];
+            counter = 0;
+            for(int i = 0; i < allNames.length; i++) {
+                if (allStats[i].equals("Finished") && isTrue){
+                    content[counter][0] = allNames[i];
+                    content[counter][1] = allPlats[i];
+                    content[counter][2] = allStats[i];
+                    counter++;
+                } else if (!allStats[i].equals("Finished") && !isTrue){
+                    content[counter][0] = allNames[i];
+                    content[counter][1] = allPlats[i];
+                    content[counter][2] = allStats[i];
+                    counter++;
+                }
+            }
+            return content;
+        }else if(type.contentEquals("Series")){
             String[] allNames = getElements("SName");
             String[] allPlats = getElements("SPlatform");
             String[] allSeasns = getElements("Seasons");
@@ -132,6 +159,25 @@ public class DataHandler {
         
     }
     
+    public static void addMovie(String name, String suggested, String status) {
+        Element data = doc.getDocumentElement();
+        Element movie = doc.createElement("Movie");
+        Element elementName = doc.createElement("MName");
+        Element elementSuggested = doc.createElement("Suggested");
+        Element elementStatus = doc.createElement("MStatus");
+        Text textName = doc.createTextNode(name);
+        Text textPlatform = doc.createTextNode(suggested);
+        Text textStatus = doc.createTextNode(status);
+        data.appendChild(movie);
+        movie.appendChild(elementName);
+        elementName.appendChild(textName);
+        movie.appendChild(elementSuggested);
+        elementSuggested.appendChild(textPlatform);
+        movie.appendChild(elementStatus);
+        elementStatus.appendChild(textStatus);
+        
+    }
+    
     public static void addSeries(String name, String platform, String seasons, String status) {
         Element data = doc.getDocumentElement();
         Element series = doc.createElement("Series");
@@ -173,6 +219,14 @@ public class DataHandler {
                     element.getParentNode().removeChild(element);
                 }
             }
+        } else if (type.equals("Movie")) {
+            all = doc.getElementsByTagName("Movie");
+            for(int i = 0; i < all.getLength(); i++) {
+                if (all.item(i).getChildNodes().item(0).getTextContent().equals(name)) {
+                    Element element = (Element) all.item(i);
+                    element.getParentNode().removeChild(element);
+                }
+            }
         }
     }
     
@@ -181,6 +235,16 @@ public class DataHandler {
         for(int i = 0; i < all.getLength(); i++) {
             if (all.item(i).getChildNodes().item(0).getTextContent().equals(name)) {
                 all.item(i).getChildNodes().item(1).setTextContent(platform);
+                all.item(i).getChildNodes().item(2).setTextContent(status);
+            }
+        }
+    }
+    
+    public static void editMovie(String name, String suggested, String status) {
+        NodeList all = doc.getElementsByTagName("Movie");
+        for(int i = 0; i < all.getLength(); i++) {
+            if (all.item(i).getChildNodes().item(0).getTextContent().equals(name)) {
+                all.item(i).getChildNodes().item(1).setTextContent(suggested);
                 all.item(i).getChildNodes().item(2).setTextContent(status);
             }
         }
@@ -204,7 +268,7 @@ public class DataHandler {
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer serializer = tf.newTransformer();
             serializer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
-            serializer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "GamesVideos.dtd");
+            serializer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "DataDTD.dtd");
             serializer.setOutputProperty(OutputKeys.INDENT, "yes");
             serializer.transform(domSource, streamResult);
             
@@ -214,6 +278,21 @@ public class DataHandler {
             e.printStackTrace();
         } finally {}
     }
-
-
+    
+    public static String getMovieSuggestions() {
+        String[] suggested = getElements("Suggested");
+        String[] mStatus = getElements("MStatus");
+        int p1 = 0;
+        int p2 = 0;
+        for(int i = 0; i < suggested.length; i++) {
+            if(mStatus[i].equals("Finished")) {
+                if(suggested[i].equals("Sascha")) {
+                    p2++;
+                } else if (suggested[i].equals("Saskia")) {
+                    p1++;
+                }
+            }
+        }
+        return "Suggested Movies watched: Saskia - " + p1 + ", Sascha - " + p2;
+    }
 }

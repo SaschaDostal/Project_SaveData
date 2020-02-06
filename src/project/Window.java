@@ -59,7 +59,7 @@ public class Window extends JFrame {
      * Create the frame.
      */
     public Window() {
-        setTitle("[S]ave[D]ata v1.0");
+        setTitle("SaveData v1.1");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
@@ -93,6 +93,25 @@ public class Window extends JFrame {
         
         JScrollPane scrollPane_1 = new JScrollPane(table_1);
         panel_1.add(scrollPane_1);
+        
+        // Movies Tab
+        
+        JPanel panel_5 = new JPanel();
+        tabbedPane.addTab("Movies", null, panel_5, null);
+        panel_5.setLayout(new BorderLayout(0, 0));
+        
+        MovieTable movieTable = new MovieTable();
+        JTable tableMovie = new JTable(movieTable);
+        
+        JScrollPane scrollPaneMovie = new JScrollPane(tableMovie);
+        panel_5.add(scrollPaneMovie, BorderLayout.CENTER);
+        
+        JPanel panel_5Sub = new JPanel();
+        panel_5.add(panel_5Sub, BorderLayout.NORTH);
+        
+        JLabel lblMoviesSuggested = new JLabel(DataHandler.getMovieSuggestions());
+        lblMoviesSuggested.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        panel_5Sub.add(lblMoviesSuggested);
         
         // Edit Entry Tab
         
@@ -132,6 +151,7 @@ public class Window extends JFrame {
         panel_2.add(comboBoxEdit, gbc_comboBoxGrid);
         comboBoxEdit.addItem("Series");
         comboBoxEdit.addItem("Game");
+        comboBoxEdit.addItem("Movie");
         
         JLabel lblNameEdit = new JLabel("Name");
         lblNameEdit.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -265,6 +285,7 @@ public class Window extends JFrame {
         panel_3.add(comboBox, gbc_comboBox);
         comboBox.addItem("Series");
         comboBox.addItem("Game");
+        comboBox.addItem("Movie");
         
         JLabel lblName = new JLabel("Name");
         lblName.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -389,8 +410,14 @@ public class Window extends JFrame {
                 if(comboBox.getItemAt(comboBox.getSelectedIndex()).contentEquals("Game")) {
                     textField_2.setText("");
                     textField_2.setEnabled(false);
+                    lblPlatform.setText("Platform");
+                } else if(comboBox.getItemAt(comboBox.getSelectedIndex()).contentEquals("Movie")) {
+                    textField_2.setText("");
+                    textField_2.setEnabled(false);
+                    lblPlatform.setText("Suggested");
                 } else if (comboBox.getItemAt(comboBox.getSelectedIndex()).contentEquals("Series")) {
                     textField_2.setEnabled(true);
+                    lblPlatform.setText("Platform");
                 }
             }
         });
@@ -399,9 +426,16 @@ public class Window extends JFrame {
             public void itemStateChanged(ItemEvent e) {
                 if(comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Game")) {
                     textField_2Edit.setEnabled(false);
+                    lblPlatformEdit.setText("Platform");
+                } else if(comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Movie")) {
+                    textField_2Edit.setEnabled(false);
+                    lblPlatformEdit.setText("Suggested");
                 } else if (comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Series") 
                         && comboBox_1Edit.getItemAt(comboBox_1Edit.getSelectedIndex()).contentEquals("Edit")) {
                     textField_2Edit.setEnabled(true);
+                    lblPlatformEdit.setText("Platform");
+                } else if (comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Series")) {
+                    lblPlatformEdit.setText("Platform");
                 }
             }
         });
@@ -434,15 +468,19 @@ public class Window extends JFrame {
                 if (comboBoxSett.getSelectedItem().equals("all")) {
                    gameTable.setFilter(Filter.ALL);
                    seriesTable.setFilter(Filter.ALL);
+                   movieTable.setFilter(Filter.ALL);
                 } else if (comboBoxSett.getSelectedItem().equals("pending")) {
                     gameTable.setFilter(Filter.PENDING);
                     seriesTable.setFilter(Filter.PENDING);
+                    movieTable.setFilter(Filter.PENDING);
                 } else if (comboBoxSett.getSelectedItem().equals("finished")) {
                     gameTable.setFilter(Filter.FINISHED);
                     seriesTable.setFilter(Filter.FINISHED);
+                    movieTable.setFilter(Filter.FINISHED);
                 }
                 gameTable.fireTableDataChanged();
                 seriesTable.fireTableDataChanged();
+                movieTable.fireTableDataChanged();
             }
         });
         
@@ -456,6 +494,8 @@ public class Window extends JFrame {
             boolean exists = false;
             if(type.equals("Game")) {
                 existingNames = DataHandler.getElements("GName");
+            } else if(type.equals("Movie")) {
+                existingNames = DataHandler.getElements("MName");
             } else if (type.equals("Series")) {
                 existingNames = DataHandler.getElements("SName");
             } else {
@@ -477,6 +517,9 @@ public class Window extends JFrame {
                 } else if (type.equals("Game")) {
                     DataHandler.addGame(name, platform, status);
                     DataHandler.saveData();
+                } else if (type.equals("Movie")) {
+                    DataHandler.addMovie(name, platform, status);
+                    DataHandler.saveData();
                 }
                 textField.setText("");
                 textField_1.setText("");
@@ -484,6 +527,8 @@ public class Window extends JFrame {
                 textField_3.setText("");
                 gameTable.fireTableDataChanged();
                 seriesTable.fireTableDataChanged();
+                movieTable.fireTableDataChanged();
+                lblMoviesSuggested.setText(DataHandler.getMovieSuggestions());
             }
         });
         
@@ -494,6 +539,14 @@ public class Window extends JFrame {
                     for( String n : DataHandler.getElements("GName")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editGame(textFieldEdit.getText(), textField_1Edit.getText(), textField_3Edit.getText());
+                            DataHandler.saveData();
+                            exists = true;
+                        } 
+                    }
+                } else if(comboBoxEdit.getSelectedItem().equals("Movie")) {
+                    for( String n : DataHandler.getElements("MName")) {
+                        if ( n.equals(textFieldEdit.getText())) {
+                            DataHandler.editMovie(textFieldEdit.getText(), textField_1Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
                             exists = true;
                         } 
@@ -516,6 +569,14 @@ public class Window extends JFrame {
                             exists = true;
                         } 
                     }
+                } else if(comboBoxEdit.getSelectedItem().equals("Movie")) {
+                    for( String n : DataHandler.getElements("MName")) {
+                        if ( n.equals(textFieldEdit.getText())) {
+                            DataHandler.deleteEntry(textFieldEdit.getText(), "Movie");
+                            DataHandler.saveData();
+                            exists = true;
+                        } 
+                    }
                 } else if(comboBoxEdit.getSelectedItem().equals("Series")) {
                     for( String n : DataHandler.getElements("SName")) {
                         if ( n.equals(textFieldEdit.getText())) {
@@ -534,6 +595,8 @@ public class Window extends JFrame {
                 textField_3Edit.setText("");
                 gameTable.fireTableDataChanged();
                 seriesTable.fireTableDataChanged();
+                movieTable.fireTableDataChanged();
+                lblMoviesSuggested.setText(DataHandler.getMovieSuggestions());
             } else {
                 labelEdit.setText("Entry does not exist!");
             }
@@ -548,6 +611,17 @@ public class Window extends JFrame {
                         String[] platform = DataHandler.getElements("GPlatform");
                         textField_1Edit.setText(platform[i]);
                         String[] status = DataHandler.getElements("GStatus");
+                        textField_3Edit.setText(status[i]);
+                        exists = true;
+                    } 
+                }
+            } else if(comboBoxEdit.getSelectedItem().equals("Movie")) {
+                String[] name = DataHandler.getElements("MName");
+                for( int i = 0; i < name.length; i++) {
+                    if ( name[i].equals(textFieldEdit.getText())) {
+                        String[] platform = DataHandler.getElements("Suggested");
+                        textField_1Edit.setText(platform[i]);
+                        String[] status = DataHandler.getElements("MStatus");
                         textField_3Edit.setText(status[i]);
                         exists = true;
                     } 

@@ -50,4 +50,19 @@
         <GPlatform>PS4</GPlatform>
         <GStatus>Finished</GStatus>
     </Game>
+    <Movie>
+        <MName>TestMovie</MName>
+        <Suggested>Sascha</Suggested>
+        <MStatus>Pending</MStatus>
+    </Movie>
+    <Movie>
+        <MName>TestMovie2</MName>
+        <Suggested>Saskia</Suggested>
+        <MStatus>Finished</MStatus>
+    </Movie>
+    <Movie>
+        <MName>TestMovie1</MName>
+        <Suggested>Saskia</Suggested>
+        <MStatus>Finished</MStatus>
+    </Movie>
 </Data>
