@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Data SYSTEM "DataDTD.dtd">
+<Data>
+    <Game>
+        <GName>Portal</GName>
+        <GPlatform>PC</GPlatform>
+        <GStatus>Finished</GStatus>
+    </Game>
+    <Game>
+        <GName>The Thalos Principle</GName>
+        <GPlatform>PC_VR</GPlatform>
+        <GStatus>Pending</GStatus>
+    </Game>
+    <Game>
+        <GName>Portal: Bridge Constructor</GName>
+        <GPlatform>Nintendo Switch</GPlatform>
+        <GStatus>Pending</GStatus>
+    </Game>
+    <Series>
+        <SName>Game of Thrones</SName>
+        <SPlatform>BluRay</SPlatform>
+        <Seasons>8</Seasons>
+        <SStatus>Season 3</SStatus>
+    </Series>
+    <Series>
+        <SName>One Tree Hill</SName>
+        <SPlatform>DVD</SPlatform>
+        <Seasons>9</Seasons>
+        <SStatus>Season 1</SStatus>
+    </Series>
+    <Series>
+        <SName>Brooklyn 99</SName>
+        <SPlatform>Netflix</SPlatform>
+        <Seasons>5+</Seasons>
+        <SStatus>Season 2</SStatus>
+    </Series>
+    <Game>
+        <GName>The Witness</GName>
+        <GPlatform>PC</GPlatform>
+        <GStatus>Pending</GStatus>
+    </Game>
+    <Series>
+        <SName>13 Reasons Why</SName>
+        <SPlatform>Netflix</SPlatform>
+        <Seasons>4</Seasons>
+        <SStatus>Season 3</SStatus>
+    </Series>
+    <Game>
+        <GName>Detroid: Become Human</GName>
+        <GPlatform>PS4</GPlatform>
+        <GStatus>Finished</GStatus>
+    </Game>
+</Data>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Data ((Game|Series)*)>
+    <!ELEMENT Game (GName, GPlatform, GStatus)>
+	   <!ELEMENT GName (#PCDATA)>
+	   <!ELEMENT GPlatform (#PCDATA)>
+	   <!ELEMENT GStatus (#PCDATA)>
+    <!ELEMENT Series (SName, SPlatform, Seasons, SStatus)>
+       <!ELEMENT SName (#PCDATA)>
+       <!ELEMENT SPlatform (#PCDATA)>
+	   <!ELEMENT Seasons (#PCDATA)>
+	   <!ELEMENT SStatus (#PCDATA)>
