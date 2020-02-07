@@ -67,8 +67,18 @@ public class Window extends JFrame {
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
         
+        JTabbedPane overTabPane = new JTabbedPane(JTabbedPane.TOP);
+        contentPane.add(overTabPane, BorderLayout.CENTER);
+        JPanel dataPanel = new JPanel();
+        JPanel maniPanel = new JPanel();
+        overTabPane.addTab("show Data", null, dataPanel, null);
+        overTabPane.addTab("manipulate Data", null, maniPanel, null);
+        dataPanel.setLayout(new BorderLayout(0, 0));
+        maniPanel.setLayout(new BorderLayout(0, 0));
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        contentPane.add(tabbedPane, BorderLayout.CENTER);
+        dataPanel.add(tabbedPane);
+        JTabbedPane tabbedPane2 = new JTabbedPane(JTabbedPane.TOP);
+        maniPanel.add(tabbedPane2);
         
         // Game Tab
         
@@ -116,7 +126,7 @@ public class Window extends JFrame {
         // Edit Entry Tab
         
         JPanel panel_2 = new JPanel();
-        tabbedPane.addTab("Edit Entry", null, panel_2, null);
+        tabbedPane2.addTab("Edit Entry", null, panel_2, null);
         
         GridBagLayout gbl_panelEdit = new GridBagLayout();
         gbl_panelEdit.columnWidths = new int[] {0, 0, 0, 0};
@@ -250,7 +260,7 @@ public class Window extends JFrame {
         // Add Entry Tab
         
         JPanel panel_3 = new JPanel();
-        tabbedPane.addTab("Add Entry", null, panel_3, null);
+        tabbedPane2.addTab("Add Entry", null, panel_3, null);
         
         GridBagLayout gbl_panel = new GridBagLayout();
         gbl_panel.columnWidths = new int[] {0, 0, 0, 0};
