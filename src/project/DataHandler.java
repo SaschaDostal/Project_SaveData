@@ -2,6 +2,7 @@ package project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -135,6 +136,36 @@ public class DataHandler {
                 }
             }
             return content;
+        } else if(type.contentEquals("Activity")){
+            String[] allDes = getElements("Description");
+            String[] allLoc = getElements("Location");
+            String[] allCat = getElements("Category");
+            String[] allStats = getElements("AStatus");
+            for(int i = 0; i < allDes.length; i++) {
+                if (allStats[i].equals("Finished") && isTrue){
+                    counter++;
+                } else if (!allStats[i].equals("Finished") && !isTrue){
+                    counter++;
+                }
+            }
+            content = new String[counter][4];
+            counter = 0;
+            for(int i = 0; i < allDes.length; i++) {
+                if (allStats[i].equals("Finished") && isTrue){
+                    content[counter][0] = allDes[i];
+                    content[counter][1] = allLoc[i];
+                    content[counter][2] = allCat[i];
+                    content[counter][3] = allStats[i];
+                    counter++;
+                } else if (!allStats[i].equals("Finished") && !isTrue){
+                    content[counter][0] = allDes[i];
+                    content[counter][1] = allLoc[i];
+                    content[counter][2] = allCat[i];
+                    content[counter][3] = allStats[i];
+                    counter++;
+                }
+            }
+            return content;
         } else {
             return null;
         }
@@ -201,6 +232,29 @@ public class DataHandler {
         
     }
     
+    public static void addActivity(String description, String location, String category, String status) {
+        Element data = doc.getDocumentElement();
+        Element series = doc.createElement("Activity");
+        Element elementName = doc.createElement("Description");
+        Element elementPlatform = doc.createElement("Location");
+        Element elementSeason = doc.createElement("Category");
+        Element elementStatus = doc.createElement("AStatus");
+        Text textDes = doc.createTextNode(description);
+        Text textLoc = doc.createTextNode(location);
+        Text textCat = doc.createTextNode(category);
+        Text textStatus = doc.createTextNode(status);
+        data.appendChild(series);
+        series.appendChild(elementName);
+        elementName.appendChild(textDes);
+        series.appendChild(elementPlatform);
+        elementPlatform.appendChild(textLoc);
+        series.appendChild(elementSeason);
+        elementSeason.appendChild(textCat);
+        series.appendChild(elementStatus);
+        elementStatus.appendChild(textStatus);
+        
+    }
+    
     public static void deleteEntry(String name, String type) {
         NodeList all;
         if (type.equals("Game")) {
@@ -221,6 +275,14 @@ public class DataHandler {
             }
         } else if (type.equals("Movie")) {
             all = doc.getElementsByTagName("Movie");
+            for(int i = 0; i < all.getLength(); i++) {
+                if (all.item(i).getChildNodes().item(0).getTextContent().equals(name)) {
+                    Element element = (Element) all.item(i);
+                    element.getParentNode().removeChild(element);
+                }
+            }
+        } else if (type.equals("Activity")) {
+            all = doc.getElementsByTagName("Activity");
             for(int i = 0; i < all.getLength(); i++) {
                 if (all.item(i).getChildNodes().item(0).getTextContent().equals(name)) {
                     Element element = (Element) all.item(i);
@@ -261,6 +323,17 @@ public class DataHandler {
         }
     }
     
+    public static void editActivity(String description, String location, String category, String status) {
+        NodeList all = doc.getElementsByTagName("Activity");
+        for(int i = 0; i < all.getLength(); i++) {
+            if (all.item(i).getChildNodes().item(0).getTextContent().equals(description)) {
+                all.item(i).getChildNodes().item(1).setTextContent(location);
+                all.item(i).getChildNodes().item(2).setTextContent(category);
+                all.item(i).getChildNodes().item(3).setTextContent(status);
+            }
+        }
+    }
+    
     public static void saveData() {
         try {
             DOMSource domSource = new DOMSource(doc);
@@ -279,20 +352,135 @@ public class DataHandler {
         } finally {}
     }
     
+    public static void setNames(String name1, String name2) {
+        NodeList settings = doc.getElementsByTagName("Settings");
+        settings.item(0).getChildNodes().item(0).setTextContent(name1);
+        settings.item(0).getChildNodes().item(1).setTextContent(name2);
+        saveData();
+     }
+    
     public static String getMovieSuggestions() {
+        String[] name1 = getElements("Name1");
+        String[] name2 = getElements("Name2");
         String[] suggested = getElements("Suggested");
         String[] mStatus = getElements("MStatus");
         int p1 = 0;
         int p2 = 0;
         for(int i = 0; i < suggested.length; i++) {
             if(mStatus[i].equals("Finished")) {
-                if(suggested[i].equals("Sascha")) {
+                if(suggested[i].equals(name2[0])) {
                     p2++;
-                } else if (suggested[i].equals("Saskia")) {
+                } else if (suggested[i].equals(name1[0])) {
                     p1++;
                 }
             }
         }
-        return "Suggested Movies watched: Saskia - " + p1 + ", Sascha - " + p2;
+        return "Suggested Movies watched: " + name1[0] + " - " + p1 + ", " + name2[0] + " - " + p2;
+    }
+    
+    public static String[][] getActivities(String status, String location, String category) {
+        String[][] data;
+        Object[] objects;
+        String[] des = getElements("Description");
+        String[] loc = getElements("Location");
+        String[] cat = getElements("Category");
+        String[] sta = getElements("AStatus");
+        data = new String[des.length][4];
+        for(int i = 0; i < des.length; i++) {
+            data[i][0] = des[i];
+            data[i][1] = loc[i];
+            data[i][2] = cat[i];
+            data[i][3] = sta[i];
+        }
+        if(status.contentEquals("All")) {
+            if(location.contentEquals("All")) {
+                if(category.contentEquals("All")) {
+                    objects = Stream.of(data).toArray();
+                } else {
+                    objects = Stream.of(data).filter((x) -> x[2].equals(category)).toArray();
+                }
+            } else {
+                if(category.contentEquals("All")) {
+                    objects = Stream.of(data).filter((x) -> x[1].equals(location)).toArray();
+                } else {
+                    objects = Stream.of(data).filter((x) -> x[1].equals(location)).filter((x) -> x[2].equals(category)).toArray();
+                }
+            }
+        } else {
+            if(location.contentEquals("All")) {
+                if(category.contentEquals("All")) {
+                    objects = Stream.of(data).filter((x) -> x[3].equals(status)).toArray();
+                } else {
+                    objects = Stream.of(data).filter((x) -> x[3].equals(status)).filter((x) -> x[2].equals(category)).toArray();
+                }
+            } else {
+                if(category.contentEquals("All")) {
+                    objects = Stream.of(data).filter((x) -> x[3].equals(status)).filter((x) -> x[1].equals(location)).toArray();
+                } else {
+                    objects = Stream.of(data).filter((x) -> x[3].equals(status)).filter((x) -> x[1].equals(location)).filter((x) -> x[2].equals(category)).toArray();
+                }
+            }
+        }
+        data = new String[objects.length][4];
+        for(int i = 0; i < objects.length; i++) {
+            data[i] = (String[]) objects[i];
+        }
+        return data;
+    }
+    
+    public static String getRandomActivity(String status, String location, String category) {
+        String[][] data;
+        Object[] objects;
+        String[] des = getElements("Description");
+        String[] loc = getElements("Location");
+        String[] cat = getElements("Category");
+        String[] sta = getElements("AStatus");
+        data = new String[des.length][4];
+        for(int i = 0; i < des.length; i++) {
+            data[i][0] = des[i];
+            data[i][1] = loc[i];
+            data[i][2] = cat[i];
+            data[i][3] = sta[i];
+        }
+        if(status.contentEquals("All")) {
+            if(location.contentEquals("All")) {
+                if(category.contentEquals("All")) {
+                    objects = Stream.of(data).toArray();
+                } else {
+                    objects = Stream.of(data).filter((x) -> x[2].equals(category)).toArray();
+                }
+            } else {
+                if(category.contentEquals("All")) {
+                    objects = Stream.of(data).filter((x) -> x[1].equals(location)).toArray();
+                } else {
+                    objects = Stream.of(data).filter((x) -> x[1].equals(location)).filter((x) -> x[2].equals(category)).toArray();
+                }
+            }
+        } else {
+            if(location.contentEquals("All")) {
+                if(category.contentEquals("All")) {
+                    objects = Stream.of(data).filter((x) -> x[3].equals(status)).toArray();
+                } else {
+                    objects = Stream.of(data).filter((x) -> x[3].equals(status)).filter((x) -> x[2].equals(category)).toArray();
+                }
+            } else {
+                if(category.contentEquals("All")) {
+                    objects = Stream.of(data).filter((x) -> x[3].equals(status)).filter((x) -> x[1].equals(location)).toArray();
+                } else {
+                    objects = Stream.of(data).filter((x) -> x[3].equals(status)).filter((x) -> x[1].equals(location)).filter((x) -> x[2].equals(category)).toArray();
+                }
+            }
+        }
+        data = new String[objects.length][4];
+        for(int i = 0; i < objects.length; i++) {
+            data[i] = (String[]) objects[i];
+        }
+        int random = (int) (Math.random()*data.length);
+        try {
+            return data[random][0];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return "No Activities Found";
+        }
+        
     }
 }
