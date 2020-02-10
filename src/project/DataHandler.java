@@ -334,6 +334,20 @@ public class DataHandler {
         }
     }
     
+    public static void setTextSize(int textSize) {
+        NodeList size = doc.getElementsByTagName("TextSize");
+        size.item(0).setTextContent(String.valueOf(textSize));
+        saveData();
+    }
+    
+    public static void setWindowSize(int x, int y) {
+        NodeList sizeX = doc.getElementsByTagName("SizeX");
+        NodeList sizeY = doc.getElementsByTagName("SizeY");
+        sizeX.item(0).setTextContent(String.valueOf(x));
+        sizeY.item(0).setTextContent(String.valueOf(y));
+        saveData();
+    }
+    
     public static void saveData() {
         try {
             DOMSource domSource = new DOMSource(doc);
