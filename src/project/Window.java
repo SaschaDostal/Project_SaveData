@@ -13,6 +13,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -46,13 +48,14 @@ public class Window extends JFrame {
     private JTextField textFieldName2;
     private int textSize = Integer.parseInt(DataHandler.getElements("TextSize")[0]);
     private int x = Integer.parseInt(DataHandler.getElements("SizeX")[0]);
-    private int y = Integer.parseInt(DataHandler.getElements("SizeY")[0]);;
-    
+    private int y = Integer.parseInt(DataHandler.getElements("SizeY")[0]);
+    static ResourceBundle resources;
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
         DataHandler.read();
+        resources = ResourceBundle.getBundle("resources/resources", new Locale(DataHandler.getElements("Language")[0]));
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -69,7 +72,7 @@ public class Window extends JFrame {
      * Create the frame.
      */
     public Window() {
-        setTitle("SaveData v1.2a");
+        setTitle("SaveData v1.3");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(-7, 0, x, y);
         contentPane = new JPanel();
@@ -86,8 +89,8 @@ public class Window extends JFrame {
         dataPanel.setBackground(Color.decode("#C8DCF0"));
         JPanel maniPanel = new JPanel();
         maniPanel.setBackground(Color.decode("#C8DCF0"));
-        overTabPane.addTab("Show Data", null, dataPanel, null);
-        overTabPane.addTab("Manipulate Data", null, maniPanel, null);
+        overTabPane.addTab(resources.getString("ShowData"), null, dataPanel, null);
+        overTabPane.addTab(resources.getString("ManipulateData"), null, maniPanel, null);
         dataPanel.setLayout(new BorderLayout(0, 0));
         maniPanel.setLayout(new BorderLayout(0, 0));
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -102,7 +105,7 @@ public class Window extends JFrame {
         // Game Tab
         
         JPanel panel = new JPanel();
-        tabbedPane.addTab("Games", null, panel, null);
+        tabbedPane.addTab(resources.getString("Games"), null, panel, null);
         panel.setLayout(new BorderLayout(0, 0));
         
         GameTable gameTable = new GameTable();
@@ -120,7 +123,7 @@ public class Window extends JFrame {
         // Series Tab
         
         JPanel panel_1 = new JPanel();
-        tabbedPane.addTab("Series", null, panel_1, null);
+        tabbedPane.addTab(resources.getString("Series"), null, panel_1, null);
         panel_1.setLayout(new BorderLayout(0, 0));
 
         SeriesTable seriesTable = new SeriesTable();
@@ -138,7 +141,7 @@ public class Window extends JFrame {
         // Movies Tab
         
         JPanel panel_5 = new JPanel();
-        tabbedPane.addTab("Movies", null, panel_5, null);
+        tabbedPane.addTab(resources.getString("Movies"), null, panel_5, null);
         panel_5.setLayout(new BorderLayout(0, 0));
         
         MovieTable movieTable = new MovieTable();
@@ -164,7 +167,7 @@ public class Window extends JFrame {
         // Activities Tab
         
         JPanel panelActiv = new JPanel();
-        tabbedPane.addTab("Activities", null, panelActiv, null);
+        tabbedPane.addTab(resources.getString("Activities"), null, panelActiv, null);
         panelActiv.setLayout(new BorderLayout(0, 0));
         
         JPanel panel_2Activ = new JPanel();
@@ -175,37 +178,37 @@ public class Window extends JFrame {
         panel_2Activ.add(panel_1Activ);
         panel_1Activ.setLayout(new GridLayout(0, 4, 0, 0));
         
-        JComboBox<String> comboBoxActiv = new JComboBox<String>();
+        JComboBox<ComboItem> comboBoxActiv = new JComboBox<ComboItem>();
         comboBoxActiv.setBackground(Color.DARK_GRAY);
         comboBoxActiv.setForeground(Color.decode("#C8DCF0"));
         comboBoxActiv.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         panel_1Activ.add(comboBoxActiv);
-        comboBoxActiv.addItem("All");
-        comboBoxActiv.addItem("Pending");
+        comboBoxActiv.addItem(new ComboItem(resources.getString("All"),"All"));
+        comboBoxActiv.addItem(new ComboItem(resources.getString("Pending"), "Pending"));
         
-        JComboBox<String> comboBox_1Activ = new JComboBox<String>();
+        JComboBox<ComboItem> comboBox_1Activ = new JComboBox<ComboItem>();
         comboBox_1Activ.setBackground(Color.DARK_GRAY);
         comboBox_1Activ.setForeground(Color.decode("#C8DCF0"));
         comboBox_1Activ.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         panel_1Activ.add(comboBox_1Activ);
-        comboBox_1Activ.addItem("All");
-        comboBox_1Activ.addItem("Home");
-        comboBox_1Activ.addItem("Outside");
-        comboBox_1Activ.addItem("Outdoor");
+        comboBox_1Activ.addItem(new ComboItem(resources.getString("All"),"All"));
+        comboBox_1Activ.addItem(new ComboItem(resources.getString("Home"),"Home"));
+        comboBox_1Activ.addItem(new ComboItem(resources.getString("Outside"),"Outside"));
+        comboBox_1Activ.addItem(new ComboItem(resources.getString("Outdoor"),"Outdoor"));
         
-        JComboBox<String> comboBox_2Activ = new JComboBox<String>();
+        JComboBox<ComboItem> comboBox_2Activ = new JComboBox<ComboItem>();
         comboBox_2Activ.setBackground(Color.DARK_GRAY);
         comboBox_2Activ.setForeground(Color.decode("#C8DCF0"));
         comboBox_2Activ.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         panel_1Activ.add(comboBox_2Activ);
-        comboBox_2Activ.addItem("All");
-        comboBox_2Activ.addItem("Eating");
-        comboBox_2Activ.addItem("Sport");
-        comboBox_2Activ.addItem("Trip");
-        comboBox_2Activ.addItem("Relaxing");
-        comboBox_2Activ.addItem("Other");
+        comboBox_2Activ.addItem(new ComboItem(resources.getString("All"),"All"));
+        comboBox_2Activ.addItem(new ComboItem(resources.getString("Eating"),"Eating"));
+        comboBox_2Activ.addItem(new ComboItem(resources.getString("Sport"),"Sport"));
+        comboBox_2Activ.addItem(new ComboItem(resources.getString("Trip"),"Trip"));
+        comboBox_2Activ.addItem(new ComboItem(resources.getString("Relaxing"),"Relaxing"));
+        comboBox_2Activ.addItem(new ComboItem(resources.getString("All"),"Other"));
         
-        JButton btnGetRandom = new JButton("Random");
+        JButton btnGetRandom = new JButton(resources.getString("Random"));
         btnGetRandom.setBackground(Color.DARK_GRAY);
         btnGetRandom.setForeground(Color.decode("#C8DCF0"));
         btnGetRandom.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -215,7 +218,7 @@ public class Window extends JFrame {
         panel_2Activ.add(panel_3Activ);
         panel_3Activ.setBackground(Color.decode("#C8DCF0"));
         
-        JLabel lblRandomactivity = new JLabel("RandomActivity");
+        JLabel lblRandomactivity = new JLabel(resources.getString("RandomActivity"));
         lblRandomactivity.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         panel_3Activ.add(lblRandomactivity);
         
@@ -235,7 +238,7 @@ public class Window extends JFrame {
         
         JPanel panel_2 = new JPanel();
         panel_2.setBackground(Color.decode("#C8DCF0"));
-        tabbedPane2.addTab("Edit Entry", null, panel_2, null);
+        tabbedPane2.addTab(resources.getString("EditEntry"), null, panel_2, null);
         
         GridBagLayout gbl_panelEdit = new GridBagLayout();
         gbl_panelEdit.columnWidths = new int[] {0, 0, 0, 0};
@@ -252,7 +255,7 @@ public class Window extends JFrame {
         gbc_labelEdit.gridy = 1;
         panel_2.add(labelEdit, gbc_labelEdit);
         
-        JLabel lblTypeEdit = new JLabel("Type");
+        JLabel lblTypeEdit = new JLabel(resources.getString("Type"));
         lblTypeEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblEdit = new GridBagConstraints();
         gbc_lblEdit.anchor = GridBagConstraints.WEST;
@@ -261,7 +264,7 @@ public class Window extends JFrame {
         gbc_lblEdit.gridy = 2;
         panel_2.add(lblTypeEdit, gbc_lblEdit);
         
-        JComboBox<String> comboBoxEdit = new JComboBox<String>();
+        JComboBox<ComboItem> comboBoxEdit = new JComboBox<ComboItem>();
         comboBoxEdit.setForeground(Color.decode("#C8DCF0"));
         comboBoxEdit.setBackground(Color.DARK_GRAY);
         comboBoxEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -271,12 +274,12 @@ public class Window extends JFrame {
         gbc_comboBoxGrid.gridx = 2;
         gbc_comboBoxGrid.gridy = 2;
         panel_2.add(comboBoxEdit, gbc_comboBoxGrid);
-        comboBoxEdit.addItem("Series");
-        comboBoxEdit.addItem("Game");
-        comboBoxEdit.addItem("Movie");
-        comboBoxEdit.addItem("Activity");
+        comboBoxEdit.addItem(new ComboItem(resources.getString("Series"),"Series"));
+        comboBoxEdit.addItem(new ComboItem(resources.getString("Game"),"Game"));
+        comboBoxEdit.addItem(new ComboItem(resources.getString("Movie"),"Movie"));
+        comboBoxEdit.addItem(new ComboItem(resources.getString("Activity"),"Activity"));
         
-        JLabel lblNameEdit = new JLabel("Name");
+        JLabel lblNameEdit = new JLabel(resources.getString("Name"));
         lblNameEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblNameEdit = new GridBagConstraints();
         gbc_lblNameEdit.anchor = GridBagConstraints.WEST;
@@ -297,7 +300,7 @@ public class Window extends JFrame {
         panel_2.add(textFieldEdit, gbc_textFieldEdit);
         textFieldEdit.setColumns(10);
         
-        JLabel lblPlatformEdit = new JLabel("Platform");
+        JLabel lblPlatformEdit = new JLabel(resources.getString("Platform"));
         lblPlatformEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblPlatformEdit = new GridBagConstraints();
         gbc_lblPlatformEdit.anchor = GridBagConstraints.WEST;
@@ -318,7 +321,7 @@ public class Window extends JFrame {
         panel_2.add(textField_1Edit, gbc_textField_1Edit);
         textField_1Edit.setColumns(10);
         
-        JLabel lblSeasonEdit = new JLabel("Season");
+        JLabel lblSeasonEdit = new JLabel(resources.getString("Seasons"));
         lblSeasonEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblSeasonEdit = new GridBagConstraints();
         gbc_lblSeasonEdit.anchor = GridBagConstraints.WEST;
@@ -339,7 +342,7 @@ public class Window extends JFrame {
         panel_2.add(textField_2Edit, gbc_textField_2Edit);
         textField_2Edit.setColumns(10);
         
-        JLabel lblStatusEdit = new JLabel("Status");
+        JLabel lblStatusEdit = new JLabel(resources.getString("Status"));
         lblStatusEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblStatusEdit = new GridBagConstraints();
         gbc_lblStatusEdit.anchor = GridBagConstraints.WEST;
@@ -360,7 +363,7 @@ public class Window extends JFrame {
         panel_2.add(textField_3Edit, gbc_textField_3Edit);
         textField_3Edit.setColumns(10);
         
-        JComboBox<String> comboBox_1Edit = new JComboBox<String>();
+        JComboBox<ComboItem> comboBox_1Edit = new JComboBox<ComboItem>();
         comboBox_1Edit.setForeground(Color.decode("#C8DCF0"));
         comboBox_1Edit.setBackground(Color.DARK_GRAY);
         comboBox_1Edit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -370,10 +373,10 @@ public class Window extends JFrame {
         gbc_comboBox_1Edit.gridx = 2;
         gbc_comboBox_1Edit.gridy = 7;
         panel_2.add(comboBox_1Edit, gbc_comboBox_1Edit);
-        comboBox_1Edit.addItem("Edit");
-        comboBox_1Edit.addItem("Delete");
+        comboBox_1Edit.addItem(new ComboItem(resources.getString("Edit"),"Edit"));
+        comboBox_1Edit.addItem(new ComboItem(resources.getString("Delete"),"Delete"));
         
-        JButton btnEdit = new JButton("Edit");
+        JButton btnEdit = new JButton(resources.getString("Edit"));
         btnEdit.setForeground(Color.decode("#C8DCF0"));
         btnEdit.setBackground(Color.DARK_GRAY);
         btnEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -383,7 +386,7 @@ public class Window extends JFrame {
         gbc_btnEdit.gridy = 8;
         panel_2.add(btnEdit, gbc_btnEdit);
         
-        JButton btnLoad = new JButton("Load Data");
+        JButton btnLoad = new JButton(resources.getString("LoadData"));
         btnLoad.setForeground(Color.decode("#C8DCF0"));
         btnLoad.setBackground(Color.DARK_GRAY);
         btnLoad.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -396,7 +399,7 @@ public class Window extends JFrame {
         
         JPanel panel_3 = new JPanel();
         panel_3.setBackground(Color.decode("#C8DCF0"));
-        tabbedPane2.addTab("Add Entry", null, panel_3, null);
+        tabbedPane2.addTab(resources.getString("AddEntry"), null, panel_3, null);
         
         GridBagLayout gbl_panel = new GridBagLayout();
         gbl_panel.columnWidths = new int[] {0, 0, 0, 0};
@@ -413,7 +416,7 @@ public class Window extends JFrame {
         gbc_label.gridy = 1;
         panel_3.add(label, gbc_label);
         
-        JLabel lblType = new JLabel("Type");
+        JLabel lblType = new JLabel(resources.getString("Type"));
         lblType.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblType = new GridBagConstraints();
         gbc_lblType.anchor = GridBagConstraints.WEST;
@@ -422,7 +425,7 @@ public class Window extends JFrame {
         gbc_lblType.gridy = 2;
         panel_3.add(lblType, gbc_lblType);
         
-        JComboBox<String> comboBox = new JComboBox<String>();
+        JComboBox<ComboItem> comboBox = new JComboBox<ComboItem>();
         comboBox.setForeground(Color.decode("#C8DCF0"));
         comboBox.setBackground(Color.DARK_GRAY);
         comboBox.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -432,12 +435,12 @@ public class Window extends JFrame {
         gbc_comboBox.gridx = 2;
         gbc_comboBox.gridy = 2;
         panel_3.add(comboBox, gbc_comboBox);
-        comboBox.addItem("Series");
-        comboBox.addItem("Game");
-        comboBox.addItem("Movie");
-        comboBox.addItem("Activity");
+        comboBox.addItem(new ComboItem(resources.getString("Series"),"Series"));
+        comboBox.addItem(new ComboItem(resources.getString("Game"),"Game"));
+        comboBox.addItem(new ComboItem(resources.getString("Movie"),"Movie"));
+        comboBox.addItem(new ComboItem(resources.getString("Activity"),"Activity"));
         
-        JLabel lblName = new JLabel("Name");
+        JLabel lblName = new JLabel(resources.getString("Name"));
         lblName.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblName = new GridBagConstraints();
         gbc_lblName.anchor = GridBagConstraints.WEST;
@@ -458,7 +461,7 @@ public class Window extends JFrame {
         panel_3.add(textField, gbc_textField);
         textField.setColumns(10);
         
-        JLabel lblPlatform = new JLabel("Platform");
+        JLabel lblPlatform = new JLabel(resources.getString("Platform"));
         lblPlatform.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblPlatform = new GridBagConstraints();
         gbc_lblPlatform.anchor = GridBagConstraints.WEST;
@@ -479,7 +482,7 @@ public class Window extends JFrame {
         panel_3.add(textField_1, gbc_textField_1);
         textField_1.setColumns(10);
         
-        JLabel lblSeason = new JLabel("Season");
+        JLabel lblSeason = new JLabel(resources.getString("Seasons"));
         lblSeason.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblSeason = new GridBagConstraints();
         gbc_lblSeason.anchor = GridBagConstraints.WEST;
@@ -500,7 +503,7 @@ public class Window extends JFrame {
         panel_3.add(textField_2, gbc_textField_2);
         textField_2.setColumns(10);
         
-        JLabel lblStatus = new JLabel("Status");
+        JLabel lblStatus = new JLabel(resources.getString("Status"));
         lblStatus.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblStatus = new GridBagConstraints();
         gbc_lblStatus.anchor = GridBagConstraints.WEST;
@@ -521,7 +524,7 @@ public class Window extends JFrame {
         panel_3.add(textField_3, gbc_textField_3);
         textField_3.setColumns(10);
         
-        JButton btnAdd = new JButton("Add");
+        JButton btnAdd = new JButton(resources.getString("Add"));
         btnAdd.setForeground(Color.decode("#C8DCF0"));
         btnAdd.setBackground(Color.DARK_GRAY);
         btnAdd.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -534,7 +537,7 @@ public class Window extends JFrame {
         
         JPanel panel_4 = new JPanel();
         panel_4.setBackground(Color.decode("#C8DCF0"));
-        tabbedPane.addTab("Filter", null, panel_4, null);
+        tabbedPane.addTab(resources.getString("Filter"), null, panel_4, null);
         GridBagLayout gbl_panelFilter = new GridBagLayout();
         gbl_panelFilter.columnWidths = new int[] {0, 0, 0, 0};
         gbl_panelFilter.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -550,7 +553,7 @@ public class Window extends JFrame {
         gbc_labelFilter.gridy = 0;
         panel_4.add(labelFilter, gbc_labelFilter);
         
-        JLabel lblShowEntries = new JLabel("Show Entries");
+        JLabel lblShowEntries = new JLabel(resources.getString("ShowEntries"));
         lblShowEntries.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblShowEntries = new GridBagConstraints();
         gbc_lblShowEntries.anchor = GridBagConstraints.WEST;
@@ -568,7 +571,7 @@ public class Window extends JFrame {
         gbc_lblEmpty.gridy = 2;
         panel_4.add(lblEmpty, gbc_lblEmpty);
         
-        JLabel lblOnly = new JLabel("Only Activities:");
+        JLabel lblOnly = new JLabel(resources.getString("OnlyActivities") + ":");
         lblOnly.setFont(new Font("Tahoma", Font.BOLD, textSize));
         GridBagConstraints gbc_lblOnly = new GridBagConstraints();
         gbc_lblOnly.anchor = GridBagConstraints.WEST;
@@ -577,7 +580,7 @@ public class Window extends JFrame {
         gbc_lblOnly.gridy = 3;
         panel_4.add(lblOnly, gbc_lblOnly);
         
-        JLabel lblLocation = new JLabel("Location");
+        JLabel lblLocation = new JLabel(resources.getString("Location"));
         lblLocation.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblLocation = new GridBagConstraints();
         gbc_lblLocation.anchor = GridBagConstraints.WEST;
@@ -586,7 +589,7 @@ public class Window extends JFrame {
         gbc_lblLocation.gridy = 4;
         panel_4.add(lblLocation, gbc_lblLocation);
         
-        JLabel lblCategory = new JLabel("Category");
+        JLabel lblCategory = new JLabel(resources.getString("Category"));
         lblCategory.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblCategory = new GridBagConstraints();
         gbc_lblCategory.anchor = GridBagConstraints.WEST;
@@ -595,7 +598,7 @@ public class Window extends JFrame {
         gbc_lblCategory.gridy = 5;
         panel_4.add(lblCategory, gbc_lblCategory);
         
-        JComboBox<String> comboBoxFilter = new JComboBox<String>();
+        JComboBox<ComboItem> comboBoxFilter = new JComboBox<ComboItem>();
         comboBoxFilter.setBackground(Color.DARK_GRAY);
         comboBoxFilter.setForeground(Color.decode("#C8DCF0"));
         comboBoxFilter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -605,11 +608,11 @@ public class Window extends JFrame {
         gbc_comboBoxFilter.gridx = 2;
         gbc_comboBoxFilter.gridy = 1;
         panel_4.add(comboBoxFilter, gbc_comboBoxFilter);
-        comboBoxFilter.addItem("All");
-        comboBoxFilter.addItem("Pending");
-        comboBoxFilter.addItem("Finished");
+        comboBoxFilter.addItem(new ComboItem(resources.getString("All"),"All"));
+        comboBoxFilter.addItem(new ComboItem(resources.getString("Pending"),"Pending"));
+        comboBoxFilter.addItem(new ComboItem(resources.getString("Finished"),"Finished"));
         
-        JComboBox<String> comboBox_1Filter = new JComboBox<String>();
+        JComboBox<ComboItem> comboBox_1Filter = new JComboBox<ComboItem>();
         comboBox_1Filter.setBackground(Color.DARK_GRAY);
         comboBox_1Filter.setForeground(Color.decode("#C8DCF0"));
         comboBox_1Filter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -619,12 +622,12 @@ public class Window extends JFrame {
         gbc_comboBox_1Filter.gridx = 2;
         gbc_comboBox_1Filter.gridy = 4;
         panel_4.add(comboBox_1Filter, gbc_comboBox_1Filter);
-        comboBox_1Filter.addItem("All");
-        comboBox_1Filter.addItem("Home");
-        comboBox_1Filter.addItem("Outside");
-        comboBox_1Filter.addItem("Outdoor");
+        comboBox_1Filter.addItem(new ComboItem(resources.getString("All"),"All"));
+        comboBox_1Filter.addItem(new ComboItem(resources.getString("Home"),"Home"));
+        comboBox_1Filter.addItem(new ComboItem(resources.getString("Outside"),"Outside"));
+        comboBox_1Filter.addItem(new ComboItem(resources.getString("Outdoor"),"Outdoor"));
         
-        JComboBox<String> comboBox_2Filter = new JComboBox<String>();
+        JComboBox<ComboItem> comboBox_2Filter = new JComboBox<ComboItem>();
         comboBox_2Filter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         comboBox_2Filter.setBackground(Color.DARK_GRAY);
         comboBox_2Filter.setForeground(Color.decode("#C8DCF0"));
@@ -634,18 +637,18 @@ public class Window extends JFrame {
         gbc_comboBox_2Filter.gridx = 2;
         gbc_comboBox_2Filter.gridy = 5;
         panel_4.add(comboBox_2Filter, gbc_comboBox_2Filter);
-        comboBox_2Filter.addItem("All");
-        comboBox_2Filter.addItem("Eating");
-        comboBox_2Filter.addItem("Sport");
-        comboBox_2Filter.addItem("Trip");
-        comboBox_2Filter.addItem("Relaxing");
-        comboBox_2Filter.addItem("Other");
+        comboBox_2Filter.addItem(new ComboItem(resources.getString("All"),"All"));
+        comboBox_2Filter.addItem(new ComboItem(resources.getString("Eating"),"Eating"));
+        comboBox_2Filter.addItem(new ComboItem(resources.getString("Sport"),"Sport"));
+        comboBox_2Filter.addItem(new ComboItem(resources.getString("Trip"),"Trip"));
+        comboBox_2Filter.addItem(new ComboItem(resources.getString("Relaxing"),"Relaxing"));
+        comboBox_2Filter.addItem(new ComboItem(resources.getString("Other"),"Other"));
         
         // Settings Tab
         
         JPanel panel_6 = new JPanel();
         panel_6.setBackground(Color.decode("#C8DCF0"));
-        tabbedPane2.addTab("Settings", null, panel_6, null);
+        tabbedPane2.addTab(resources.getString("Settings"), null, panel_6, null);
         GridBagLayout gbl_panelSett = new GridBagLayout();
         gbl_panelSett.columnWidths = new int[] {0, 0, 0, 0};
         gbl_panelSett.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -661,7 +664,7 @@ public class Window extends JFrame {
         gbc_labelSett.gridy = 0;
         panel_6.add(labelSett, gbc_labelSett);
         
-        JLabel lblName1 = new JLabel("Name 1");
+        JLabel lblName1 = new JLabel(resources.getString("Name") + " 1");
         lblName1.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblName1 = new GridBagConstraints();
         gbc_lblName1.anchor = GridBagConstraints.WEST;
@@ -670,7 +673,7 @@ public class Window extends JFrame {
         gbc_lblName1.gridy = 1;
         panel_6.add(lblName1, gbc_lblName1);
         
-        JLabel lblName2 = new JLabel("Name 2");
+        JLabel lblName2 = new JLabel(resources.getString("Name") + " 2");
         lblName2.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblName2 = new GridBagConstraints();
         gbc_lblName2.anchor = GridBagConstraints.WEST;
@@ -703,7 +706,7 @@ public class Window extends JFrame {
         panel_6.add(textFieldName2, gbc_textFieldName2);
         textFieldName2.setColumns(10);
         
-        JButton btnNames = new JButton("Change Names");
+        JButton btnNames = new JButton(resources.getString("ChangeNames"));
         btnNames.setForeground(Color.decode("#C8DCF0"));
         btnNames.setBackground(Color.DARK_GRAY);
         btnNames.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -721,7 +724,7 @@ public class Window extends JFrame {
         gbc_lbltextEmpty.gridy = 4;
         panel_6.add(lbltextEmpty, gbc_lbltextEmpty);
         
-        JLabel lbltextSize = new JLabel("Text Size");
+        JLabel lbltextSize = new JLabel(resources.getString("TextSize"));
         lbltextSize.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lbltextSize = new GridBagConstraints();
         gbc_lbltextSize.anchor = GridBagConstraints.WEST;
@@ -730,25 +733,34 @@ public class Window extends JFrame {
         gbc_lbltextSize.gridy = 5;
         panel_6.add(lbltextSize, gbc_lbltextSize);
         
-        JLabel lblwindowSize = new JLabel("Window Size");
+        JLabel lblwindowSize = new JLabel(resources.getString("WindowSize"));
         lblwindowSize.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_lblwindowSize = new GridBagConstraints();
         gbc_lblwindowSize.anchor = GridBagConstraints.WEST;
         gbc_lblwindowSize.insets = new Insets(0, 0, 5, 5);
         gbc_lblwindowSize.gridx = 0;
-        gbc_lblwindowSize.gridy = 6;
+        gbc_lblwindowSize.gridy = 7;
         panel_6.add(lblwindowSize, gbc_lblwindowSize);
         
-        JButton btnSize = new JButton("Save current Windowsize");
+        JLabel lbllang = new JLabel(resources.getString("Language"));
+        lbllang.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        GridBagConstraints gbc_lbllang = new GridBagConstraints();
+        gbc_lbllang.anchor = GridBagConstraints.WEST;
+        gbc_lbllang.insets = new Insets(0, 0, 5, 5);
+        gbc_lbllang.gridx = 0;
+        gbc_lbllang.gridy = 6;
+        panel_6.add(lbllang, gbc_lbllang);
+        
+        JButton btnSize = new JButton(resources.getString("SaveCurrentWindowsize"));
         btnSize.setForeground(Color.decode("#C8DCF0"));
         btnSize.setBackground(Color.DARK_GRAY);
         btnSize.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         GridBagConstraints gbc_btnSize = new GridBagConstraints();
         gbc_btnSize.gridx = 2;
-        gbc_btnSize.gridy = 6;
+        gbc_btnSize.gridy = 7;
         panel_6.add(btnSize, gbc_btnSize);
         
-        JComboBox<String> comboBoxText = new JComboBox<String>();
+        JComboBox<ComboItem> comboBoxText = new JComboBox<ComboItem>();
         comboBoxText.setForeground(Color.decode("#C8DCF0"));
         comboBoxText.setBackground(Color.DARK_GRAY);
         comboBoxText.setFont(new Font("Tahoma", Font.PLAIN, textSize));
@@ -758,10 +770,24 @@ public class Window extends JFrame {
         gbc_comboBoxText.gridx = 2;
         gbc_comboBoxText.gridy = 5;
         panel_6.add(comboBoxText, gbc_comboBoxText);
-        comboBoxText.addItem("Set Textsize");
-        comboBoxText.addItem("Small");
-        comboBoxText.addItem("Medium");
-        comboBoxText.addItem("Large");
+        comboBoxText.addItem(new ComboItem(resources.getString("ChooseTextsize"),"ChooseTextSize"));
+        comboBoxText.addItem(new ComboItem(resources.getString("Small"),"Small"));
+        comboBoxText.addItem(new ComboItem(resources.getString("Medium"),"Medium"));
+        comboBoxText.addItem(new ComboItem(resources.getString("Large"),"Large"));
+        
+        JComboBox<ComboItem> comboBoxLang = new JComboBox<ComboItem>();
+        comboBoxLang.setForeground(Color.decode("#C8DCF0"));
+        comboBoxLang.setBackground(Color.DARK_GRAY);
+        comboBoxLang.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        GridBagConstraints gbc_comboBoxLang = new GridBagConstraints();
+        gbc_comboBoxLang.insets = new Insets(0, 0, 5, 0);
+        gbc_comboBoxLang.fill = GridBagConstraints.HORIZONTAL;
+        gbc_comboBoxLang.gridx = 2;
+        gbc_comboBoxLang.gridy = 6;
+        panel_6.add(comboBoxLang, gbc_comboBoxLang);
+        comboBoxLang.addItem(new ComboItem(resources.getString("ChooseLanguage"),"ChooseLanguage"));
+        comboBoxLang.addItem(new ComboItem(resources.getString("DE"),"DE"));
+        comboBoxLang.addItem(new ComboItem(resources.getString("EN"),"EN"));
         
         JLabel lbltextEmpty2 = new JLabel("   ");
         lbltextEmpty2.setFont(new Font("Tahoma", Font.PLAIN, textSize - (int)(textSize*0.25)));
@@ -769,104 +795,128 @@ public class Window extends JFrame {
         gbc_lbltextEmpty2.anchor = GridBagConstraints.CENTER;
         gbc_lbltextEmpty2.insets = new Insets(0, 0, 5, 5);
         gbc_lbltextEmpty2.gridx = 2;
-        gbc_lbltextEmpty2.gridy = 7;
+        gbc_lbltextEmpty2.gridy = 8;
         panel_6.add(lbltextEmpty2, gbc_lbltextEmpty2);
         
         // ActionListeners
         
         comboBoxText.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                if(comboBoxText.getSelectedItem().equals("Small")) {
-                    textSize = 14;
+                if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Small")) {
                     DataHandler.setTextSize(14);
-                } else if(comboBoxText.getSelectedItem().equals("Medium")) {
-                    textSize = 18;
+                } else if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Medium")) {
                     DataHandler.setTextSize(18);
-                } else if(comboBoxText.getSelectedItem().equals("Large")) {
-                    textSize = 22;
+                } else if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Large")) {
                     DataHandler.setTextSize(22);
                 }
-                lbltextEmpty2.setText("Restart to apply changes");
+                lbltextEmpty2.setText(resources.getString("RestartToApplyChanges") + ".");
+            }
+        });
+        
+        comboBoxLang.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if(((ComboItem)comboBoxLang.getSelectedItem()).value.equals("DE")) {
+                    DataHandler.setLanguage("de");
+                } else if(((ComboItem)comboBoxLang.getSelectedItem()).value.equals("EN")) {
+                    DataHandler.setLanguage("en");
+                }
+                lbltextEmpty2.setText(resources.getString("RestartToApplyChanges") + ".");
             }
         });
         
         comboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                if(comboBox.getItemAt(comboBox.getSelectedIndex()).contentEquals("Game")) {
+                if(((ComboItem) comboBox.getSelectedItem()).value.contentEquals("Game")) {
                     textField_2.setText("");
                     textField_2.setEnabled(false);
-                    lblName.setText("Name");
-                    lblPlatform.setText("Platform");
-                    lblSeason.setText("Season");
-                } else if(comboBox.getItemAt(comboBox.getSelectedIndex()).contentEquals("Movie")) {
+                    textField_2.setBackground(Color.decode("#C8DCF0"));
+                    lblName.setText(resources.getString("Name"));
+                    lblPlatform.setText(resources.getString("Platform"));
+                    lblSeason.setText(resources.getString("Seasons"));
+                } else if(((ComboItem) comboBox.getSelectedItem()).value.contentEquals("Movie")) {
                     textField_2.setText("");
                     textField_2.setEnabled(false);
-                    lblName.setText("Name");
-                    lblPlatform.setText("Suggested");
-                    lblSeason.setText("Season");
-                } else if (comboBox.getItemAt(comboBox.getSelectedIndex()).contentEquals("Series")) {
+                    textField_2.setBackground(Color.decode("#C8DCF0"));
+                    lblName.setText(resources.getString("Name"));
+                    lblPlatform.setText(resources.getString("Suggested"));
+                    lblSeason.setText(resources.getString("Seasons"));
+                } else if (((ComboItem) comboBox.getSelectedItem()).value.contentEquals("Series")) {
                     textField_2.setEnabled(true);
-                    lblName.setText("Name");
-                    lblPlatform.setText("Platform");
-                    lblSeason.setText("Season");
-                } else if (comboBox.getItemAt(comboBox.getSelectedIndex()).contentEquals("Activity")) {
+                    textField_2.setBackground(Color.DARK_GRAY);
+                    lblName.setText(resources.getString("Name"));
+                    lblPlatform.setText(resources.getString("Platform"));
+                    lblSeason.setText(resources.getString("Seasons"));
+                } else if (((ComboItem) comboBox.getSelectedItem()).value.contentEquals("Activity")) {
                     textField_2.setEnabled(true);
-                    lblName.setText("Description");
-                    lblPlatform.setText("Location");
-                    lblSeason.setText("Category");
+                    textField_2.setBackground(Color.DARK_GRAY);
+                    lblName.setText(resources.getString("Description"));
+                    lblPlatform.setText(resources.getString("Location"));
+                    lblSeason.setText(resources.getString("Category"));
                 }
             }
         });
         
         comboBoxEdit.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                if(comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Game")) {
+                if(((ComboItem) comboBoxEdit.getSelectedItem()).value.contentEquals("Game")) {
                     textField_2Edit.setEnabled(false);
-                    lblNameEdit.setText("Name");
-                    lblPlatformEdit.setText("Platform");
-                    lblSeasonEdit.setText("Season");
-                } else if(comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Movie")) {
+                    textField_2Edit.setText("");
+                    textField_2Edit.setBackground(Color.decode("#C8DCF0"));
+                    lblNameEdit.setText(resources.getString("Name"));
+                    lblPlatformEdit.setText(resources.getString("Platform"));
+                    lblSeasonEdit.setText(resources.getString("Seasons"));
+                } else if(((ComboItem) comboBoxEdit.getSelectedItem()).value.contentEquals("Movie")) {
                     textField_2Edit.setEnabled(false);
-                    lblNameEdit.setText("Name");
-                    lblPlatformEdit.setText("Suggested");
-                    lblSeasonEdit.setText("Season");
-                } else if (comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Series")) {
-                    if (comboBox_1Edit.getItemAt(comboBox_1Edit.getSelectedIndex()).contentEquals("Edit")) {
+                    textField_2Edit.setText("");
+                    textField_2Edit.setBackground(Color.decode("#C8DCF0"));
+                    lblNameEdit.setText(resources.getString("Name"));
+                    lblPlatformEdit.setText(resources.getString("Suggested"));
+                    lblSeasonEdit.setText(resources.getString("Seasons"));
+                } else if (((ComboItem) comboBoxEdit.getSelectedItem()).value.contentEquals("Series")) {
+                    if (((ComboItem) comboBox_1Edit.getSelectedItem()).value.contentEquals("Edit")) {
                         textField_2Edit.setEnabled(true);
+                        textField_2Edit.setBackground(Color.DARK_GRAY);
                     }
-                    lblNameEdit.setText("Name");
-                    lblPlatformEdit.setText("Platform");
-                    lblSeasonEdit.setText("Season");
-                } else if (comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Activity")) {
-                    if (comboBox_1Edit.getItemAt(comboBox_1Edit.getSelectedIndex()).contentEquals("Edit")) {
+                    lblNameEdit.setText(resources.getString("Name"));
+                    lblPlatformEdit.setText(resources.getString("Platform"));
+                    lblSeasonEdit.setText(resources.getString("Seasons"));
+                } else if (((ComboItem) comboBoxEdit.getSelectedItem()).value.contentEquals("Activity")) {
+                    if (((ComboItem) comboBox_1Edit.getSelectedItem()).value.contentEquals("Edit")) {
                         textField_2Edit.setEnabled(true);
+                        textField_2Edit.setBackground(Color.DARK_GRAY);
                     }
-                    lblNameEdit.setText("Description");
-                    lblPlatformEdit.setText("Location");
-                    lblSeasonEdit.setText("Category");
+                    lblNameEdit.setText(resources.getString("Description"));
+                    lblPlatformEdit.setText(resources.getString("Location"));
+                    lblSeasonEdit.setText(resources.getString("Category"));
                 }
             }
         });
         
         comboBox_1Edit.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                if(comboBox_1Edit.getItemAt(comboBox_1Edit.getSelectedIndex()).contentEquals("Delete")) {
+                if(((ComboItem) comboBox_1Edit.getSelectedItem()).value.contentEquals("Delete")) {
                     textField_1Edit.setEnabled(false);
+                    textField_1Edit.setBackground(Color.decode("#C8DCF0"));
                     textField_2Edit.setEnabled(false);
+                    textField_2Edit.setBackground(Color.decode("#C8DCF0"));
                     textField_3Edit.setEnabled(false);
+                    textField_3Edit.setBackground(Color.decode("#C8DCF0"));
                     textField_1Edit.setText("");
                     textField_2Edit.setText("");
                     textField_3Edit.setText("");
-                    btnEdit.setText("Delete");
+                    btnEdit.setText(resources.getString("Delete"));
                     btnLoad.setVisible(false);
-                } else if (comboBox_1Edit.getItemAt(comboBox_1Edit.getSelectedIndex()).contentEquals("Edit")) {
+                } else if (((ComboItem) comboBox_1Edit.getSelectedItem()).value.contentEquals("Edit")) {
                     textField_1Edit.setEnabled(true);
-                    if(comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Series") || 
-                            comboBoxEdit.getItemAt(comboBoxEdit.getSelectedIndex()).contentEquals("Activity")) {
+                    textField_1Edit.setBackground(Color.DARK_GRAY);
+                    if(((ComboItem) comboBoxEdit.getSelectedItem()).value.contentEquals("Series") || 
+                            ((ComboItem) comboBoxEdit.getSelectedItem()).value.contentEquals("Activity")) {
                         textField_2Edit.setEnabled(true);
+                        textField_2Edit.setBackground(Color.DARK_GRAY);
                     }
                     textField_3Edit.setEnabled(true);
-                    btnEdit.setText("Edit");
+                    textField_3Edit.setBackground(Color.DARK_GRAY);
+                    btnEdit.setText(resources.getString("Edit"));
                     btnLoad.setVisible(true);
                 }
             }
@@ -874,17 +924,17 @@ public class Window extends JFrame {
         
         comboBoxFilter.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                if (comboBoxFilter.getSelectedItem().equals("All")) {
+                if (((ComboItem)comboBoxFilter.getSelectedItem()).value.equals("All")) {
                    gameTable.setFilter(Filter.ALL);
                    seriesTable.setFilter(Filter.ALL);
                    movieTable.setFilter(Filter.ALL);
                    activityTable.setFilter(Filter.ALL);
-                } else if (comboBoxFilter.getSelectedItem().equals("Pending")) {
+                } else if (((ComboItem)comboBoxFilter.getSelectedItem()).value.equals("Pending")) {
                     gameTable.setFilter(Filter.PENDING);
                     seriesTable.setFilter(Filter.PENDING);
                     movieTable.setFilter(Filter.PENDING);
                     activityTable.setFilter(Filter.PENDING);
-                } else if (comboBoxFilter.getSelectedItem().equals("Finished")) {
+                } else if (((ComboItem)comboBoxFilter.getSelectedItem()).value.equals("Finished")) {
                     gameTable.setFilter(Filter.FINISHED);
                     seriesTable.setFilter(Filter.FINISHED);
                     movieTable.setFilter(Filter.FINISHED);
@@ -899,20 +949,20 @@ public class Window extends JFrame {
         
         comboBox_1Filter.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                activityTable.setLocation((String) comboBox_1Filter.getSelectedItem());
+                activityTable.setLocation(((ComboItem)comboBox_1Filter.getSelectedItem()).value);
                 activityTable.fireTableDataChanged();
             }
         });
         
         comboBox_2Filter.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                activityTable.setCategory((String) comboBox_2Filter.getSelectedItem());
+                activityTable.setCategory(((ComboItem)comboBox_2Filter.getSelectedItem()).value);
                 activityTable.fireTableDataChanged();
             }
         });
         
         btnAdd.addActionListener(e -> {
-            String type = (String) comboBox.getSelectedItem();
+            String type = ((ComboItem) comboBox.getSelectedItem()).value;
             String name = textField.getText();
             String platform = textField_1.getText();
             String seasons;
@@ -936,7 +986,7 @@ public class Window extends JFrame {
                 }
             }
             if (exists) {
-                label.setText("Entry already exists!");
+                label.setText(resources.getString("EntryAlreadyExists") + "!");
             } else {
                 label.setText("    ");
                 if (type.equals("Series")) {
@@ -968,8 +1018,8 @@ public class Window extends JFrame {
         
         btnEdit.addActionListener(e -> {
             boolean exists = false;
-            if(comboBox_1Edit.getSelectedItem().equals("Edit")) {
-                if(comboBoxEdit.getSelectedItem().equals("Game")) {
+            if(((ComboItem)comboBox_1Edit.getSelectedItem()).value.equals("Edit")) {
+                if(((ComboItem)comboBoxEdit.getSelectedItem()).value.equals("Game")) {
                     for( String n : DataHandler.getElements("GName")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editGame(textFieldEdit.getText(), textField_1Edit.getText(), textField_3Edit.getText());
@@ -977,7 +1027,7 @@ public class Window extends JFrame {
                             exists = true;
                         } 
                     }
-                } else if(comboBoxEdit.getSelectedItem().equals("Movie")) {
+                } else if(((ComboItem)comboBoxEdit.getSelectedItem()).value.equals("Movie")) {
                     for( String n : DataHandler.getElements("MName")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editMovie(textFieldEdit.getText(), textField_1Edit.getText(), textField_3Edit.getText());
@@ -985,7 +1035,7 @@ public class Window extends JFrame {
                             exists = true;
                         } 
                     }
-                } else if(comboBoxEdit.getSelectedItem().equals("Series")) {
+                } else if(((ComboItem)comboBoxEdit.getSelectedItem()).value.equals("Series")) {
                     for( String n : DataHandler.getElements("SName")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editSeries(textFieldEdit.getText(), textField_1Edit.getText(), textField_2Edit.getText(), textField_3Edit.getText());
@@ -993,7 +1043,7 @@ public class Window extends JFrame {
                             exists = true;
                         } 
                     }
-                } else if(comboBoxEdit.getSelectedItem().equals("Activity")) {
+                } else if(((ComboItem)comboBoxEdit.getSelectedItem()).value.equals("Activity")) {
                     for( String n : DataHandler.getElements("Description")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editActivity(textFieldEdit.getText(), textField_1Edit.getText(), textField_2Edit.getText(), textField_3Edit.getText());
@@ -1002,8 +1052,8 @@ public class Window extends JFrame {
                         } 
                     }
                 }
-            } else if (comboBox_1Edit.getSelectedItem().equals("Delete")) {
-                if(comboBoxEdit.getSelectedItem().equals("Game")) {
+            } else if (((ComboItem)comboBox_1Edit.getSelectedItem()).value.equals("Delete")) {
+                if(((ComboItem)comboBoxEdit.getSelectedItem()).value.equals("Game")) {
                     for( String n : DataHandler.getElements("GName")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Game");
@@ -1011,7 +1061,7 @@ public class Window extends JFrame {
                             exists = true;
                         } 
                     }
-                } else if(comboBoxEdit.getSelectedItem().equals("Movie")) {
+                } else if(((ComboItem)comboBoxEdit.getSelectedItem()).value.equals("Movie")) {
                     for( String n : DataHandler.getElements("MName")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Movie");
@@ -1019,7 +1069,7 @@ public class Window extends JFrame {
                             exists = true;
                         } 
                     }
-                } else if(comboBoxEdit.getSelectedItem().equals("Series")) {
+                } else if(((ComboItem)comboBoxEdit.getSelectedItem()).value.equals("Series")) {
                     for( String n : DataHandler.getElements("SName")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Series");
@@ -1027,7 +1077,7 @@ public class Window extends JFrame {
                             exists = true;
                         } 
                     }
-                } else if(comboBoxEdit.getSelectedItem().equals("Activity")) {
+                } else if(((ComboItem)comboBoxEdit.getSelectedItem()).value.equals("Activity")) {
                     for( String n : DataHandler.getElements("Description")) {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Activity");
@@ -1049,19 +1099,19 @@ public class Window extends JFrame {
                 activityTable.fireTableDataChanged();
                 lblMoviesSuggested.setText(DataHandler.getMovieSuggestions());
             } else {
-                labelEdit.setText("Entry does not exist!");
+                labelEdit.setText(resources.getString("EntryDoesNotExist") + "!");
             }
         });
         
         btnSize.addActionListener(e -> {
             Rectangle r = this.getBounds();
             DataHandler.setWindowSize(r.width, r.height);
-            lbltextEmpty2.setText("Size saved: X: " + r.width + " , Y: " + r.height);
+            lbltextEmpty2.setText(resources.getString("SizeSaved") + ": X: " + r.width + " , Y: " + r.height);
         });
         
         btnLoad.addActionListener(e -> {
             boolean exists = false;
-            if(comboBoxEdit.getSelectedItem().equals("Game")) {
+            if(((ComboItem) comboBoxEdit.getSelectedItem()).value.equals("Game")) {
                 String[] name = DataHandler.getElements("GName");
                 for( int i = 0; i < name.length; i++) {
                     if ( name[i].equals(textFieldEdit.getText())) {
@@ -1072,7 +1122,7 @@ public class Window extends JFrame {
                         exists = true;
                     } 
                 }
-            } else if(comboBoxEdit.getSelectedItem().equals("Movie")) {
+            } else if(((ComboItem) comboBoxEdit.getSelectedItem()).value.equals("Movie")) {
                 String[] name = DataHandler.getElements("MName");
                 for( int i = 0; i < name.length; i++) {
                     if ( name[i].equals(textFieldEdit.getText())) {
@@ -1083,7 +1133,7 @@ public class Window extends JFrame {
                         exists = true;
                     } 
                 }
-            } else if(comboBoxEdit.getSelectedItem().equals("Series")) {
+            } else if(((ComboItem) comboBoxEdit.getSelectedItem()).value.equals("Series")) {
                 String[] name = DataHandler.getElements("SName");
                 for( int i = 0; i < name.length; i++) {
                     if ( name[i].equals(textFieldEdit.getText())) {
@@ -1096,7 +1146,7 @@ public class Window extends JFrame {
                         exists = true;
                     } 
                 }
-            } else if(comboBoxEdit.getSelectedItem().equals("Activity")) {
+            } else if(((ComboItem) comboBoxEdit.getSelectedItem()).value.equals("Activity")) {
                 String[] name = DataHandler.getElements("Description");
                 for( int i = 0; i < name.length; i++) {
                     if ( name[i].equals(textFieldEdit.getText())) {
@@ -1113,7 +1163,7 @@ public class Window extends JFrame {
             if(exists) {
                 labelEdit.setText("    ");
             } else {
-                labelEdit.setText("Entry does not exist!");
+                labelEdit.setText(resources.getString("EntryDoesNotExist") + "!");
             }
         });
         
@@ -1125,8 +1175,8 @@ public class Window extends JFrame {
         });
         
         btnGetRandom.addActionListener(e -> {
-            lblRandomactivity.setText(DataHandler.getRandomActivity((String) comboBoxActiv.getSelectedItem(),
-                    (String) comboBox_1Activ.getSelectedItem(), (String) comboBox_2Activ.getSelectedItem()));
+            lblRandomactivity.setText(DataHandler.getRandomActivity(((ComboItem) comboBoxActiv.getSelectedItem()).value,
+                    ((ComboItem) comboBox_1Activ.getSelectedItem()).value, ((ComboItem) comboBox_2Activ.getSelectedItem()).value));
         });
         
         
@@ -1159,11 +1209,20 @@ public class Window extends JFrame {
             public void keyTyped(KeyEvent e) {}
             public void keyReleased(KeyEvent e) {}
         };
+        KeyListener keyLoad = new KeyListener() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnLoad.doClick();
+                }
+            }
+            public void keyTyped(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {}
+        };
         textField.addKeyListener(keyAdd);
         textField_1.addKeyListener(keyAdd);
         textField_2.addKeyListener(keyAdd);
         textField_3.addKeyListener(keyAdd);
-        textFieldEdit.addKeyListener(keyEdit);
+        textFieldEdit.addKeyListener(keyLoad);
         textField_1Edit.addKeyListener(keyEdit);
         textField_2Edit.addKeyListener(keyEdit);
         textField_3Edit.addKeyListener(keyEdit);

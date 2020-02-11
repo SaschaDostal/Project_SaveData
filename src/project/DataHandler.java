@@ -2,6 +2,7 @@ package project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.MissingResourceException;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -38,6 +39,15 @@ public class DataHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static String translateIfPossible(String s) {
+        try {
+            s = Window.resources.getString(s);
+        } catch (MissingResourceException e) {
+            
+        }
+        return s;
     }
 
     public static String[] getElements(String tagName) {
@@ -340,6 +350,12 @@ public class DataHandler {
         saveData();
     }
     
+    public static void setLanguage(String lang) {
+        NodeList language = doc.getElementsByTagName("Language");
+        language.item(0).setTextContent(lang);
+        saveData();
+    }
+    
     public static void setWindowSize(int x, int y) {
         NodeList sizeX = doc.getElementsByTagName("SizeX");
         NodeList sizeY = doc.getElementsByTagName("SizeY");
@@ -389,7 +405,7 @@ public class DataHandler {
                 }
             }
         }
-        return "Suggested Movies watched: " + name1[0] + " - " + p1 + ", " + name2[0] + " - " + p2;
+        return Window.resources.getString("SuggestedMoviesWatched") + ": " + name1[0] + " - " + p1 + ", " + name2[0] + " - " + p2;
     }
     
     public static String[][] getActivities(String status, String location, String category) {

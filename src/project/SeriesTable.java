@@ -14,13 +14,13 @@ public class SeriesTable extends AbstractTableModel{
     @Override
     public String getColumnName(int column) {
         if(column == 0) {
-            return "Name";
+            return Window.resources.getString("Name");
         } else if (column == 1) {
-            return "Platform";
+            return Window.resources.getString("Platform");
         } else if (column == 2) {
-            return "Seasons";
+            return Window.resources.getString("Seasons");
         } else if (column == 3) {
-            return "Status";
+            return Window.resources.getString("Status");
         } else {
             return "Error";
         }
@@ -54,14 +54,14 @@ public class SeriesTable extends AbstractTableModel{
             } else if (columnIndex == 2) {
                 return DataHandler.getElements("Seasons")[rowIndex];
             } else if (columnIndex == 3) {
-                return DataHandler.getElements("SStatus")[rowIndex];
+                return DataHandler.translateIfPossible(DataHandler.getElements("SStatus")[rowIndex]);
             } else {
                 return "error";
             }
         } else if (filter == Filter.FINISHED) {
-            return DataHandler.getFinishedElements("Series", true)[rowIndex][columnIndex];
+            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Series", true)[rowIndex][columnIndex]);
         } else if (filter == Filter.PENDING) {
-            return DataHandler.getFinishedElements("Series", false)[rowIndex][columnIndex];
+            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Series", false)[rowIndex][columnIndex]);
         } else {
             return null;
         }

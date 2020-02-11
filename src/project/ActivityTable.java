@@ -30,13 +30,13 @@ public class ActivityTable extends AbstractTableModel{
     @Override
     public String getColumnName(int column) {
         if(column == 0) {
-            return "Description";
+            return Window.resources.getString("Description");
         } else if (column == 1) {
-            return "Location";
+            return Window.resources.getString("Location");
         } else if (column == 2) {
-            return "Category";
+            return Window.resources.getString("Category");
         } else if (column == 3) {
-            return "Status";
+            return Window.resources.getString("Status");
         } else {
             return "Error";
         }
@@ -54,6 +54,6 @@ public class ActivityTable extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return DataHandler.getActivities(status, location, category)[rowIndex][columnIndex];
+        return DataHandler.translateIfPossible(DataHandler.getActivities(status, location, category)[rowIndex][columnIndex]);
     }
 }

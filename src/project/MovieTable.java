@@ -13,11 +13,11 @@ public class MovieTable extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         if (column == 0) {
-            return "Name";
+            return Window.resources.getString("Name");
         } else if (column == 1) {
-            return "Suggested";
+            return Window.resources.getString("Suggested");
         } else if (column == 2) {
-            return "Status";
+            return Window.resources.getString("Status");
         } else {
             return "Error";
         }
@@ -49,14 +49,14 @@ public class MovieTable extends AbstractTableModel {
             } else if (columnIndex == 1) {
                 return DataHandler.getElements("Suggested")[rowIndex];
             } else if (columnIndex == 2) {
-                return DataHandler.getElements("MStatus")[rowIndex];
+                return DataHandler.translateIfPossible(DataHandler.getElements("MStatus")[rowIndex]);
             } else {
                 return "error";
             }
         } else if (filter == Filter.FINISHED) {
-            return DataHandler.getFinishedElements("Movie", true)[rowIndex][columnIndex];
+            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Movie", true)[rowIndex][columnIndex]);
         } else if (filter == Filter.PENDING) {
-            return DataHandler.getFinishedElements("Movie", false)[rowIndex][columnIndex];
+            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Movie", false)[rowIndex][columnIndex]);
         } else {
             return null;
         }
