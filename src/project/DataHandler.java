@@ -22,6 +22,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
+
 public class DataHandler {
     static String FILEPATH_IN = "Data.xml";
     private static Document doc;
@@ -39,6 +40,77 @@ public class DataHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static String[][] searchElements(String search){
+        String[][] games = new String[getElements("GName").length][3];
+        for(int i = 0; i < games.length; i++) {
+            games[i][0] = getElements("GName")[i];
+            games[i][1] = getElements("GPlatform")[i];
+            games[i][2] = getElements("GStatus")[i];
+        }
+        String[][] series = new String[getElements("SName").length][4];
+        for(int i = 0; i < series.length; i++) {
+            series[i][0] = getElements("SName")[i];
+            series[i][1] = getElements("SPlatform")[i];
+            series[i][2] = getElements("Seasons")[i];
+            series[i][3] = getElements("SStatus")[i];
+        }
+        String[][] movies = new String[getElements("MName").length][3];
+        for(int i = 0; i < movies.length; i++) {
+            movies[i][0] = getElements("MName")[i];
+            movies[i][1] = getElements("Suggested")[i];
+            movies[i][2] = getElements("MStatus")[i];
+        }
+        String[][] activities = getActivities("All", "All", "All");
+        
+        String[][] all = new String[games.length + series.length + movies.length + activities.length][5];
+        
+        for(int i = 0; i < games.length; i++) {
+            all[i][1] = "Game";
+            all[i][0] = games[i][0];
+            all[i][2] = games[i][1];
+            all[i][4] = games[i][2];
+        }
+        for(int i = games.length; i < games.length + series.length; i++) {
+            all[i][1] = "Series";
+            all[i][0] = series[i - games.length][0];
+            all[i][2] = series[i - games.length][1];
+            all[i][3] = series[i - games.length][2];
+            all[i][4] = series[i - games.length][3];
+        }
+        for(int i = games.length + series.length; i < games.length + series.length + movies.length; i++) {
+            all[i][1] = "Movie";
+            all[i][0] = movies[i - (games.length + series.length)][0];
+            all[i][2] = movies[i - (games.length + series.length)][1];
+            all[i][4] = movies[i - (games.length + series.length)][2];
+        }
+        for(int i = games.length + series.length + movies.length; i < games.length + series.length + movies.length + activities.length; i++) {
+            all[i][1] = "Activity";
+            all[i][0] = activities[i - (games.length + series.length + movies.length)][0];
+            all[i][2] = activities[i - (games.length + series.length + movies.length)][1];
+            all[i][3] = activities[i - (games.length + series.length + movies.length)][2];
+            all[i][4] = activities[i - (games.length + series.length + movies.length)][3];
+        }
+        int counter = 0;
+        for(int i = 0; i < all.length; i++) {
+            if(all[i][0].toLowerCase().contains(search.toLowerCase())) {
+                counter++;
+            }
+        }
+        String[][] searchResults = new String[counter][5];
+        counter = 0;
+        for(int i = 0; i < all.length; i++) {
+            if(all[i][0].toLowerCase().contains(search.toLowerCase())) {
+                searchResults[counter][0] = all[i][0];
+                searchResults[counter][1] = all[i][1];
+                searchResults[counter][2] = all[i][2];
+                searchResults[counter][3] = all[i][3];
+                searchResults[counter][4] = all[i][4];
+                counter++;
+            }
+        }
+        return searchResults;
     }
     
     public static String translateIfPossible(String s) {
@@ -379,7 +451,17 @@ public class DataHandler {
             e.printStackTrace();
         } catch (TransformerException e) {
             e.printStackTrace();
-        } finally {}
+        } finally {
+            int games = DataHandler.getElements("GName").length;
+            int series = DataHandler.getElements("SName").length;
+            int movies = DataHandler.getElements("MName").length;
+            int activities = DataHandler.getElements("Description").length;
+            Window.labelTotal.setText(String.valueOf(games + series + movies + activities));
+            Window.label_GameCounter.setText(String.valueOf(games));
+            Window.label_SeriesCounter.setText(String.valueOf(series)); 
+            Window.label_MovieCounter.setText(String.valueOf(movies));
+            Window.label_ActivityCounter.setText(String.valueOf(activities));
+        }
     }
     
     public static void setNames(String name1, String name2) {

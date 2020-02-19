@@ -33,9 +33,16 @@ public class Window extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JTable tableLastEdit;
     private JTable table;
     private JTable table_1;
     private JTable tableActiv;
+    private JTable tableSearch;
+    static protected JLabel labelTotal;
+    static protected JLabel label_GameCounter;
+    static protected JLabel label_SeriesCounter;
+    static protected JLabel label_MovieCounter;
+    static protected JLabel label_ActivityCounter;
     private JTextField textField;
     private JTextField textField_1;
     private JTextField textField_2;
@@ -46,6 +53,7 @@ public class Window extends JFrame {
     private JTextField textField_3Edit;
     private JTextField textFieldName1;
     private JTextField textFieldName2;
+    private JTextField txtSearch;
     private int textSize = Integer.parseInt(DataHandler.getElements("TextSize")[0]);
     private int x = Integer.parseInt(DataHandler.getElements("SizeX")[0]);
     private int y = Integer.parseInt(DataHandler.getElements("SizeY")[0]);
@@ -72,7 +80,7 @@ public class Window extends JFrame {
      * Create the frame.
      */
     public Window() {
-        setTitle("SaveData v1.3");
+        setTitle("SaveData 1.4");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(-7, 0, x, y);
         contentPane = new JPanel();
@@ -85,10 +93,12 @@ public class Window extends JFrame {
         overTabPane.setBackground(Color.GRAY);
         overTabPane.setFont(new Font("Tahoma", Font.BOLD, textSize));
         contentPane.add(overTabPane, BorderLayout.CENTER);
+        JPanel panelGeneral = new JPanel();
         JPanel dataPanel = new JPanel();
         dataPanel.setBackground(Color.decode("#C8DCF0"));
         JPanel maniPanel = new JPanel();
         maniPanel.setBackground(Color.decode("#C8DCF0"));
+        overTabPane.addTab(resources.getString("General"), null, panelGeneral, null);
         overTabPane.addTab(resources.getString("ShowData"), null, dataPanel, null);
         overTabPane.addTab(resources.getString("ManipulateData"), null, maniPanel, null);
         dataPanel.setLayout(new BorderLayout(0, 0));
@@ -101,6 +111,140 @@ public class Window extends JFrame {
         tabbedPane2.setBackground(Color.GRAY);
         tabbedPane2.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         maniPanel.add(tabbedPane2);
+        
+        // General Tab
+        
+        panelGeneral.setLayout(new BorderLayout(0, 0));
+
+        UpdateTable updateTable = new UpdateTable();
+        tableLastEdit = new JTable(updateTable);
+        tableLastEdit.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, textSize - (int)(textSize * 0.2)));
+        tableLastEdit.getTableHeader().setBackground(Color.DARK_GRAY);
+        tableLastEdit.getTableHeader().setForeground(Color.decode("#C8DCF0"));
+        tableLastEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize - (int)(textSize * 0.2)));
+        tableLastEdit.setBackground(Color.decode("#C8DCF0"));
+        tableLastEdit.setRowHeight(textSize + (int)(textSize * 0.2));
+        JScrollPane scrollPaneLastEdit = new JScrollPane(tableLastEdit);
+        panelGeneral.add(scrollPaneLastEdit, BorderLayout.CENTER);
+        
+        JPanel panelGeneralData = new JPanel();
+        panelGeneralData.setBackground(Color.decode("#C8DCF0"));
+        panelGeneral.add(panelGeneralData, BorderLayout.NORTH);
+        panelGeneralData.setLayout(new GridLayout(0, 2, 0, 0));
+        
+        JLabel labelSpace_5 = new JLabel(" ");
+        labelSpace_5.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        JLabel labelSpace_6 = new JLabel(" ");
+        panelGeneralData.add(labelSpace_5);
+        panelGeneralData.add(labelSpace_6);
+        
+        JLabel lblData = new JLabel(resources.getString("NumberOfEntries") + ":");
+        lblData.setFont(new Font("Tahoma", Font.BOLD, textSize));
+        panelGeneralData.add(lblData);
+        
+        labelTotal = new JLabel(String.valueOf(DataHandler.getElements("GName").length 
+                + DataHandler.getElements("SName").length
+                        + DataHandler.getElements("MName").length
+                                + DataHandler.getElements("Description").length));
+        labelTotal.setFont(new Font("Tahoma", Font.BOLD, textSize));
+        JLabel labelSpace_1 = new JLabel(" ");
+        labelSpace_1.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        JLabel labelSpace_2 = new JLabel(" ");
+        panelGeneralData.add(labelTotal);
+        panelGeneralData.add(labelSpace_1);
+        panelGeneralData.add(labelSpace_2);
+        
+        JLabel lblGames = new JLabel(resources.getString("Games") + ":");
+        lblGames.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        panelGeneralData.add(lblGames);
+        
+        label_GameCounter = new JLabel(String.valueOf(DataHandler.getElements("GName").length));
+        label_GameCounter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        panelGeneralData.add(label_GameCounter);
+        
+        JLabel lblSeries = new JLabel(resources.getString("Series") + ":");
+        lblSeries.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        panelGeneralData.add(lblSeries);
+        
+        label_SeriesCounter = new JLabel(String.valueOf(DataHandler.getElements("SName").length));
+        label_SeriesCounter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        panelGeneralData.add(label_SeriesCounter);
+        
+        JLabel lblMovies = new JLabel(resources.getString("Movies") + ":");
+        lblMovies.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        panelGeneralData.add(lblMovies);
+        
+        label_MovieCounter = new JLabel(String.valueOf(DataHandler.getElements("MName").length));
+        label_MovieCounter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        panelGeneralData.add(label_MovieCounter);
+        
+        JLabel lblActivities = new JLabel(resources.getString("Activities") + ":");
+        lblActivities.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        panelGeneralData.add(lblActivities);
+        
+        label_ActivityCounter = new JLabel(String.valueOf(DataHandler.getElements("Description").length));
+        label_ActivityCounter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        panelGeneralData.add(label_ActivityCounter);
+        
+        JLabel labelSpace_3 = new JLabel(" ");
+        labelSpace_3.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        JLabel labelSpace_4 = new JLabel(" ");
+        panelGeneralData.add(labelSpace_3);
+        panelGeneralData.add(labelSpace_4);
+        
+        JLabel lblLastEditsIn = new JLabel(resources.getString("LatestUpdatesInThisSession") + ":");
+        lblLastEditsIn.setFont(new Font("Tahoma", Font.BOLD, textSize));
+        panelGeneralData.add(lblLastEditsIn);
+
+        // Search Tab
+        
+        JPanel panelSearch = new JPanel();
+        panelSearch.setBackground(Color.decode("#C8DCF0"));
+        tabbedPane.addTab(resources.getString("SearchEntry"), null, panelSearch, null);
+        panelSearch.setLayout(new BorderLayout(0, 0));
+        
+        JPanel panel_1Search = new JPanel();
+        panel_1Search.setBackground(Color.decode("#C8DCF0"));
+        panelSearch.add(panel_1Search, BorderLayout.NORTH);
+        GridBagLayout gbl_panel_1Search = new GridBagLayout();
+        gbl_panel_1Search.columnWidths = new int[] {0, 0};
+        gbl_panel_1Search.rowHeights = new int[] {0};
+        gbl_panel_1Search.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+        gbl_panel_1Search.rowWeights = new double[]{0.0};
+        panel_1Search.setLayout(gbl_panel_1Search);
+        
+        txtSearch = new JTextField();
+        txtSearch.setForeground(Color.decode("#C8DCF0"));
+        txtSearch.setBackground(Color.DARK_GRAY);
+        txtSearch.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        GridBagConstraints gbc_txtSearch = new GridBagConstraints();
+        gbc_txtSearch.insets = new Insets(0, 0, 5, 0);
+        gbc_txtSearch.fill = GridBagConstraints.HORIZONTAL;
+        gbc_txtSearch.gridx = 0;
+        gbc_txtSearch.gridy = 0;
+        panel_1Search.add(txtSearch, gbc_txtSearch);
+        txtSearch.setColumns(10);
+        
+        JButton btnSearch = new JButton(resources.getString("Search"));
+        btnSearch.setForeground(Color.decode("#C8DCF0"));
+        btnSearch.setBackground(Color.DARK_GRAY);
+        btnSearch.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        GridBagConstraints gbc_btnSearch = new GridBagConstraints();
+        gbc_btnSearch.insets = new Insets(0, 0, 5, 0);
+        gbc_btnSearch.gridx = 1;
+        gbc_btnSearch.gridy = 0;
+        panel_1Search.add(btnSearch, gbc_btnSearch);
+
+        SearchTable searchTable = new SearchTable();
+        tableSearch = new JTable(searchTable);
+        tableSearch.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, textSize - (int)(textSize * 0.2)));
+        tableSearch.getTableHeader().setBackground(Color.DARK_GRAY);
+        tableSearch.getTableHeader().setForeground(Color.decode("#C8DCF0"));
+        tableSearch.setBackground(Color.decode("#C8DCF0"));
+        tableSearch.setFont(new Font("Tahoma", Font.PLAIN, textSize - (int)(textSize * 0.2)));
+        tableSearch.setRowHeight(textSize + (int)(textSize * 0.2));
+        JScrollPane scrollPaneSearch = new JScrollPane(tableSearch);
+        panelSearch.add(scrollPaneSearch, BorderLayout.CENTER);
         
         // Game Tab
         
@@ -206,7 +350,7 @@ public class Window extends JFrame {
         comboBox_2Activ.addItem(new ComboItem(resources.getString("Sport"),"Sport"));
         comboBox_2Activ.addItem(new ComboItem(resources.getString("Trip"),"Trip"));
         comboBox_2Activ.addItem(new ComboItem(resources.getString("Relaxing"),"Relaxing"));
-        comboBox_2Activ.addItem(new ComboItem(resources.getString("All"),"Other"));
+        comboBox_2Activ.addItem(new ComboItem(resources.getString("Other"),"Other"));
         
         JButton btnGetRandom = new JButton(resources.getString("Random"));
         btnGetRandom.setBackground(Color.DARK_GRAY);
@@ -804,11 +948,15 @@ public class Window extends JFrame {
             public void itemStateChanged(ItemEvent e) {
                 if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Small")) {
                     DataHandler.setTextSize(14);
+                    LatestUpdates.addUpdate("Settings", "TextSize", "Small");
                 } else if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Medium")) {
                     DataHandler.setTextSize(18);
+                    LatestUpdates.addUpdate("Settings", "TextSize", "Medium");
                 } else if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Large")) {
                     DataHandler.setTextSize(22);
+                    LatestUpdates.addUpdate("Settings", "TextSize", "Large");
                 }
+                updateTable.fireTableDataChanged();
                 lbltextEmpty2.setText(resources.getString("RestartToApplyChanges") + ".");
             }
         });
@@ -817,9 +965,12 @@ public class Window extends JFrame {
             public void itemStateChanged(ItemEvent e) {
                 if(((ComboItem)comboBoxLang.getSelectedItem()).value.equals("DE")) {
                     DataHandler.setLanguage("de");
+                    LatestUpdates.addUpdate("Settings", "Language", "DE");
                 } else if(((ComboItem)comboBoxLang.getSelectedItem()).value.equals("EN")) {
+                    LatestUpdates.addUpdate("Settings", "Language", "EN");
                     DataHandler.setLanguage("en");
                 }
+                updateTable.fireTableDataChanged();
                 lbltextEmpty2.setText(resources.getString("RestartToApplyChanges") + ".");
             }
         });
@@ -992,16 +1143,20 @@ public class Window extends JFrame {
                 if (type.equals("Series")) {
                     seasons = textField_2.getText();
                     DataHandler.addSeries(name, platform, seasons, status);
+                    LatestUpdates.addUpdate("Add", "Series", name);
                     DataHandler.saveData();
                 } else if (type.equals("Activity")) {
                     seasons = textField_2.getText();
                     DataHandler.addActivity(name, platform, seasons, status);
+                    LatestUpdates.addUpdate("Add", "Activity", name);
                     DataHandler.saveData();
                 } else if (type.equals("Game")) {
                     DataHandler.addGame(name, platform, status);
+                    LatestUpdates.addUpdate("Add", "Game", name);
                     DataHandler.saveData();
                 } else if (type.equals("Movie")) {
                     DataHandler.addMovie(name, platform, status);
+                    LatestUpdates.addUpdate("Add", "Movie", name);
                     DataHandler.saveData();
                 }
                 textField.setText("");
@@ -1012,6 +1167,7 @@ public class Window extends JFrame {
                 seriesTable.fireTableDataChanged();
                 movieTable.fireTableDataChanged();
                 activityTable.fireTableDataChanged();
+                updateTable.fireTableDataChanged();
                 lblMoviesSuggested.setText(DataHandler.getMovieSuggestions());
             }
         });
@@ -1024,6 +1180,7 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editGame(textFieldEdit.getText(), textField_1Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
+                            LatestUpdates.addUpdate("Edit", "Game", textFieldEdit.getText());
                             exists = true;
                         } 
                     }
@@ -1032,6 +1189,7 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editMovie(textFieldEdit.getText(), textField_1Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
+                            LatestUpdates.addUpdate("Edit", "Movie", textFieldEdit.getText());
                             exists = true;
                         } 
                     }
@@ -1040,6 +1198,7 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editSeries(textFieldEdit.getText(), textField_1Edit.getText(), textField_2Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
+                            LatestUpdates.addUpdate("Edit", "Series", textFieldEdit.getText());
                             exists = true;
                         } 
                     }
@@ -1048,6 +1207,7 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editActivity(textFieldEdit.getText(), textField_1Edit.getText(), textField_2Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
+                            LatestUpdates.addUpdate("Edit", "Activity", textFieldEdit.getText());
                             exists = true;
                         } 
                     }
@@ -1058,6 +1218,7 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Game");
                             DataHandler.saveData();
+                            LatestUpdates.addUpdate("Delete", "Game", textFieldEdit.getText());
                             exists = true;
                         } 
                     }
@@ -1066,6 +1227,7 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Movie");
                             DataHandler.saveData();
+                            LatestUpdates.addUpdate("Delete", "Movie", textFieldEdit.getText());
                             exists = true;
                         } 
                     }
@@ -1074,6 +1236,7 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Series");
                             DataHandler.saveData();
+                            LatestUpdates.addUpdate("Delete", "Series", textFieldEdit.getText());
                             exists = true;
                         } 
                     }
@@ -1082,6 +1245,7 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Activity");
                             DataHandler.saveData();
+                            LatestUpdates.addUpdate("Delete", "Activity", textFieldEdit.getText());
                             exists = true;
                         } 
                     }
@@ -1097,6 +1261,7 @@ public class Window extends JFrame {
                 seriesTable.fireTableDataChanged();
                 movieTable.fireTableDataChanged();
                 activityTable.fireTableDataChanged();
+                updateTable.fireTableDataChanged();
                 lblMoviesSuggested.setText(DataHandler.getMovieSuggestions());
             } else {
                 labelEdit.setText(resources.getString("EntryDoesNotExist") + "!");
@@ -1106,7 +1271,15 @@ public class Window extends JFrame {
         btnSize.addActionListener(e -> {
             Rectangle r = this.getBounds();
             DataHandler.setWindowSize(r.width, r.height);
+            LatestUpdates.addUpdate("Settings", "WindowSize", "X: " + r.width + ", Y: " + r.height);
+            updateTable.fireTableDataChanged();
             lbltextEmpty2.setText(resources.getString("SizeSaved") + ": X: " + r.width + " , Y: " + r.height);
+        });
+        
+        btnSearch.addActionListener(e -> {
+            searchTable.searchedElements = DataHandler.searchElements(txtSearch.getText());
+            txtSearch.setText("");
+            searchTable.fireTableDataChanged();
         });
         
         btnLoad.addActionListener(e -> {
@@ -1169,6 +1342,8 @@ public class Window extends JFrame {
         
         btnNames.addActionListener(e -> {
             DataHandler.setNames(textFieldName1.getText(), textFieldName2.getText());
+            LatestUpdates.addUpdate("Settings", "ChangeNames", "1: " + textFieldName1.getText() + " 2: " + textFieldName2.getText());
+            updateTable.fireTableDataChanged();
             textFieldName1.setText("");
             textFieldName2.setText("");
             lblMoviesSuggested.setText(DataHandler.getMovieSuggestions());
@@ -1212,7 +1387,20 @@ public class Window extends JFrame {
         KeyListener keyLoad = new KeyListener() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    btnLoad.doClick();
+                    if(((ComboItem) comboBox_1Edit.getSelectedItem()).value.contentEquals("Edit")) {
+                        btnLoad.doClick();
+                    } else if(((ComboItem) comboBox_1Edit.getSelectedItem()).value.contentEquals("Delete")) {
+                        btnEdit.doClick();
+                    }
+                }
+            }
+            public void keyTyped(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {}
+        };
+        KeyListener keySearch = new KeyListener() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        btnSearch.doClick();
                 }
             }
             public void keyTyped(KeyEvent e) {}
@@ -1228,5 +1416,6 @@ public class Window extends JFrame {
         textField_3Edit.addKeyListener(keyEdit);
         textFieldName1.addKeyListener(keyNames);
         textFieldName2.addKeyListener(keyNames);
+        txtSearch.addKeyListener(keySearch);
     }
 }
