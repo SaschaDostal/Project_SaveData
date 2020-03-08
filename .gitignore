@@ -23,4 +23,5 @@ buildNumber.properties
 
 # Binaries
 bin/
-
+Data.xml
+DataDTD.dtd

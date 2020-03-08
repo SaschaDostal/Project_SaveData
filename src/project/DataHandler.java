@@ -25,8 +25,70 @@ import org.xml.sax.SAXException;
 
 public class DataHandler {
     static String FILEPATH_IN = "Data.xml";
+    private static Document paths;
     private static Document doc;
-
+    
+    public static void readPath() {
+        DocumentBuilderFactory factoryPath = DocumentBuilderFactory.newInstance();
+        factoryPath.setIgnoringElementContentWhitespace(true);
+        try {
+            DocumentBuilder builder = factoryPath.newDocumentBuilder();
+            paths = builder.parse(new File("Paths.xml"));
+            FILEPATH_IN = paths.getElementsByTagName("Start").item(0).getTextContent();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static String getNextPath() {
+        NodeList pathList = paths.getElementsByTagName("Path");
+        for(int i = 0; i < pathList.getLength(); i++) {
+            if(pathList.item(i).getTextContent().contentEquals(FILEPATH_IN)) {
+                if(i < pathList.getLength() - 1) {
+                    FILEPATH_IN = pathList.item(i + 1).getTextContent();
+                    break;
+                } else {
+                    FILEPATH_IN = pathList.item(0).getTextContent();
+                    break;
+                }
+            }
+        }
+        read();
+        int games = DataHandler.getElements("GName").length;
+        int series = DataHandler.getElements("SName").length;
+        int movies = DataHandler.getElements("MName").length;
+        int activities = DataHandler.getElements("Description").length;
+        Window.labelTotal.setText(String.valueOf(games + series + movies + activities));
+        Window.label_GameCounter.setText(String.valueOf(games));
+        Window.label_SeriesCounter.setText(String.valueOf(series)); 
+        Window.label_MovieCounter.setText(String.valueOf(movies));
+        Window.label_ActivityCounter.setText(String.valueOf(activities));
+        
+        NodeList startPath = paths.getElementsByTagName("Start");
+        startPath.item(0).setTextContent(FILEPATH_IN);
+        try {
+            DOMSource domSource = new DOMSource(paths);
+            StreamResult streamResult = new StreamResult(new File("Paths.xml"));
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer serializer = tf.newTransformer();
+            serializer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
+            serializer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "PathsDTD.dtd");
+            serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+            serializer.transform(domSource, streamResult);
+            
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+        
+        return FILEPATH_IN;
+    }
+    
     public static void read() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringElementContentWhitespace(true);
@@ -439,7 +501,7 @@ public class DataHandler {
     public static void saveData() {
         try {
             DOMSource domSource = new DOMSource(doc);
-            StreamResult streamResult = new StreamResult(new File("Data.xml"));
+            StreamResult streamResult = new StreamResult(new File(FILEPATH_IN));
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer serializer = tf.newTransformer();
             serializer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
@@ -461,6 +523,9 @@ public class DataHandler {
             Window.label_SeriesCounter.setText(String.valueOf(series)); 
             Window.label_MovieCounter.setText(String.valueOf(movies));
             Window.label_ActivityCounter.setText(String.valueOf(activities));
+            Window.lblTextbox.setText(" " + Window.resources.getString("Owner") + ": " 
+                    + ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
         }
     }
     

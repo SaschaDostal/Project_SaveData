@@ -3,7 +3,7 @@
 <Data>
     <Settings>
         <Name1>Sascha</Name1>
-        <Name2/>
+        <Name2>Saskia</Name2>
         <TextSize>18</TextSize>
         <SizeX>872</SizeX>
         <SizeY>566</SizeY>
@@ -58,56 +58,6 @@
         <GPlatform>PS4</GPlatform>
         <GStatus>Finished</GStatus>
     </Game>
-    <Movie>
-        <MName>TestMovie</MName>
-        <Suggested>Sascha</Suggested>
-        <MStatus>Pending</MStatus>
-    </Movie>
-    <Movie>
-        <MName>TestMovie2</MName>
-        <Suggested>Saskia</Suggested>
-        <MStatus>Finished</MStatus>
-    </Movie>
-    <Movie>
-        <MName>TestMovie1</MName>
-        <Suggested>Saskia</Suggested>
-        <MStatus>Finished</MStatus>
-    </Movie>
-    <Activity>
-        <Description>Walk in Park</Description>
-        <Location>Outdoor</Location>
-        <Category>Sport</Category>
-        <AStatus>Pending</AStatus>
-    </Activity>
-    <Activity>
-        <Description>Watch a movie</Description>
-        <Location>Home</Location>
-        <Category>Other</Category>
-        <AStatus>Finished</AStatus>
-    </Activity>
-    <Movie>
-        <MName>TestMovie3</MName>
-        <Suggested>Sascha</Suggested>
-        <MStatus>Finished</MStatus>
-    </Movie>
-    <Activity>
-        <Description>TestActivity</Description>
-        <Location>Outdoor</Location>
-        <Category>Eating</Category>
-        <AStatus>Pending</AStatus>
-    </Activity>
-    <Activity>
-        <Description>TestActivity1</Description>
-        <Location>Outside</Location>
-        <Category>Eating</Category>
-        <AStatus>Finished</AStatus>
-    </Activity>
-    <Activity>
-        <Description>Whatever</Description>
-        <Location>Outdoor</Location>
-        <Category>Trip</Category>
-        <AStatus>Pending</AStatus>
-    </Activity>
     <Series>
         <SName>TestSerie</SName>
         <SPlatform>Netflix</SPlatform>
@@ -120,14 +70,21 @@
         <Category>Sport</Category>
         <AStatus>Pending</AStatus>
     </Activity>
-    <Game>
-        <GName>TestGameForFile1</GName>
-        <GPlatform>testitest</GPlatform>
-        <GStatus>Finished</GStatus>
-    </Game>
-    <Game>
-        <GName>Testgame</GName>
-        <GPlatform/>
-        <GStatus/>
-    </Game>
+    <Movie>
+        <MName>TestMovie</MName>
+        <Suggested>Sascha</Suggested>
+        <MStatus>Pending</MStatus>
+    </Movie>
+    <Series>
+        <SName>Peter</SName>
+        <SPlatform/>
+        <Seasons/>
+        <SStatus>Finished</SStatus>
+    </Series>
+    <Series>
+        <SName/>
+        <SPlatform/>
+        <Seasons/>
+        <SStatus/>
+    </Series>
 </Data>

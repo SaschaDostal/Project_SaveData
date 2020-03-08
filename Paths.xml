@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE Paths SYSTEM "PathsDTD.dtd">
+<Paths>
+    <Start>Data.xml</Start>
+    <Path>Data.xml</Path>
+    <Path>Data_1.xml</Path>
+</Paths>

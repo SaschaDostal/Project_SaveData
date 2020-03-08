@@ -16,6 +16,7 @@ import java.awt.event.KeyListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -27,6 +28,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
 public class Window extends JFrame {
@@ -43,6 +45,7 @@ public class Window extends JFrame {
     static protected JLabel label_SeriesCounter;
     static protected JLabel label_MovieCounter;
     static protected JLabel label_ActivityCounter;
+    static protected JLabel lblTextbox;
     private JTextField textField;
     private JTextField textField_1;
     private JTextField textField_2;
@@ -62,6 +65,7 @@ public class Window extends JFrame {
      * Launch the application.
      */
     public static void main(String[] args) {
+        DataHandler.readPath();
         DataHandler.read();
         resources = ResourceBundle.getBundle("resources/resources", new Locale(DataHandler.getElements("Language")[0]));
         EventQueue.invokeLater(new Runnable() {
@@ -80,7 +84,7 @@ public class Window extends JFrame {
      * Create the frame.
      */
     public Window() {
-        setTitle("SaveData 1.4");
+        setTitle("SaveData 1.5");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(-7, 0, x, y);
         contentPane = new JPanel();
@@ -88,10 +92,30 @@ public class Window extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(contentPane);
+        JToolBar toolBar = new JToolBar();
+        toolBar.setBackground(Color.gray);
+        toolBar.setFloatable(false);
+        contentPane.add(toolBar, BorderLayout.SOUTH);
+        JButton btnPath = new JButton(resources.getString("FILE") + ": " + DataHandler.FILEPATH_IN);
+        btnPath.setForeground(Color.decode("#C8DCF0"));
+        btnPath.setBackground(Color.DARK_GRAY);
+        btnPath.setFont(new Font("Tahoma", Font.PLAIN, (int) (textSize * 0.8)));
+        btnPath.setFocusable(false);
+        toolBar.add(btnPath);
+        lblTextbox = new JLabel(" " + resources.getString("Owner") + ": " 
+                + ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                        : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
+        lblTextbox.setFont(new Font("Tahoma", Font.PLAIN, (int) (textSize * 0.8)));
+        toolBar.add(lblTextbox);
+        toolBar.add(Box.createHorizontalGlue());
+        JLabel lblMadeBy = new JLabel("Made by Sascha Dostal ");
+        lblMadeBy.setFont(new Font("Tahoma", Font.PLAIN, (int) (textSize * 0.5)));
+        toolBar.add(lblMadeBy);
         UIManager.put("TabbedPane.selected", Color.decode("#C8DCF0"));
         JTabbedPane overTabPane = new JTabbedPane(JTabbedPane.TOP);
         overTabPane.setBackground(Color.GRAY);
         overTabPane.setFont(new Font("Tahoma", Font.BOLD, textSize));
+        overTabPane.setFocusable(false);
         contentPane.add(overTabPane, BorderLayout.CENTER);
         JPanel panelGeneral = new JPanel();
         JPanel dataPanel = new JPanel();
@@ -106,10 +130,12 @@ public class Window extends JFrame {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setBackground(Color.GRAY);
         tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        tabbedPane.setFocusable(false);
         dataPanel.add(tabbedPane);
         JTabbedPane tabbedPane2 = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane2.setBackground(Color.GRAY);
         tabbedPane2.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        tabbedPane2.setFocusable(false);
         maniPanel.add(tabbedPane2);
         
         // General Tab
@@ -229,6 +255,7 @@ public class Window extends JFrame {
         btnSearch.setForeground(Color.decode("#C8DCF0"));
         btnSearch.setBackground(Color.DARK_GRAY);
         btnSearch.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        btnSearch.setFocusable(false);
         GridBagConstraints gbc_btnSearch = new GridBagConstraints();
         gbc_btnSearch.insets = new Insets(0, 0, 5, 0);
         gbc_btnSearch.gridx = 1;
@@ -326,6 +353,7 @@ public class Window extends JFrame {
         comboBoxActiv.setBackground(Color.DARK_GRAY);
         comboBoxActiv.setForeground(Color.decode("#C8DCF0"));
         comboBoxActiv.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBoxActiv.setFocusable(false);
         panel_1Activ.add(comboBoxActiv);
         comboBoxActiv.addItem(new ComboItem(resources.getString("All"),"All"));
         comboBoxActiv.addItem(new ComboItem(resources.getString("Pending"), "Pending"));
@@ -334,6 +362,7 @@ public class Window extends JFrame {
         comboBox_1Activ.setBackground(Color.DARK_GRAY);
         comboBox_1Activ.setForeground(Color.decode("#C8DCF0"));
         comboBox_1Activ.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBox_1Activ.setFocusable(false);
         panel_1Activ.add(comboBox_1Activ);
         comboBox_1Activ.addItem(new ComboItem(resources.getString("All"),"All"));
         comboBox_1Activ.addItem(new ComboItem(resources.getString("Home"),"Home"));
@@ -344,6 +373,7 @@ public class Window extends JFrame {
         comboBox_2Activ.setBackground(Color.DARK_GRAY);
         comboBox_2Activ.setForeground(Color.decode("#C8DCF0"));
         comboBox_2Activ.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBox_2Activ.setFocusable(false);
         panel_1Activ.add(comboBox_2Activ);
         comboBox_2Activ.addItem(new ComboItem(resources.getString("All"),"All"));
         comboBox_2Activ.addItem(new ComboItem(resources.getString("Eating"),"Eating"));
@@ -356,6 +386,7 @@ public class Window extends JFrame {
         btnGetRandom.setBackground(Color.DARK_GRAY);
         btnGetRandom.setForeground(Color.decode("#C8DCF0"));
         btnGetRandom.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        btnGetRandom.setFocusable(false);
         panel_1Activ.add(btnGetRandom);
         
         JPanel panel_3Activ = new JPanel();
@@ -412,6 +443,7 @@ public class Window extends JFrame {
         comboBoxEdit.setForeground(Color.decode("#C8DCF0"));
         comboBoxEdit.setBackground(Color.DARK_GRAY);
         comboBoxEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBoxEdit.setFocusable(false);
         GridBagConstraints gbc_comboBoxGrid = new GridBagConstraints();
         gbc_comboBoxGrid.insets = new Insets(0, 0, 5, 0);
         gbc_comboBoxGrid.fill = GridBagConstraints.HORIZONTAL;
@@ -511,6 +543,7 @@ public class Window extends JFrame {
         comboBox_1Edit.setForeground(Color.decode("#C8DCF0"));
         comboBox_1Edit.setBackground(Color.DARK_GRAY);
         comboBox_1Edit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBox_1Edit.setFocusable(false);
         GridBagConstraints gbc_comboBox_1Edit = new GridBagConstraints();
         gbc_comboBox_1Edit.insets = new Insets(0, 0, 0, 5);
         gbc_comboBox_1Edit.fill = GridBagConstraints.HORIZONTAL;
@@ -524,6 +557,7 @@ public class Window extends JFrame {
         btnEdit.setForeground(Color.decode("#C8DCF0"));
         btnEdit.setBackground(Color.DARK_GRAY);
         btnEdit.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        btnEdit.setFocusable(false);
         GridBagConstraints gbc_btnEdit = new GridBagConstraints();
         gbc_btnEdit.anchor = GridBagConstraints.NORTH;
         gbc_btnEdit.gridx = 2;
@@ -534,6 +568,7 @@ public class Window extends JFrame {
         btnLoad.setForeground(Color.decode("#C8DCF0"));
         btnLoad.setBackground(Color.DARK_GRAY);
         btnLoad.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        btnLoad.setFocusable(false);
         GridBagConstraints gbc_btnLoad = new GridBagConstraints();
         gbc_btnLoad.gridx = 0;
         gbc_btnLoad.gridy = 7;
@@ -573,6 +608,7 @@ public class Window extends JFrame {
         comboBox.setForeground(Color.decode("#C8DCF0"));
         comboBox.setBackground(Color.DARK_GRAY);
         comboBox.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBox.setFocusable(false);
         GridBagConstraints gbc_comboBox = new GridBagConstraints();
         gbc_comboBox.insets = new Insets(0, 0, 5, 0);
         gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
@@ -672,6 +708,7 @@ public class Window extends JFrame {
         btnAdd.setForeground(Color.decode("#C8DCF0"));
         btnAdd.setBackground(Color.DARK_GRAY);
         btnAdd.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        btnAdd.setFocusable(false);
         GridBagConstraints gbc_btnAdd = new GridBagConstraints();
         gbc_btnAdd.gridx = 2;
         gbc_btnAdd.gridy = 7;
@@ -746,6 +783,7 @@ public class Window extends JFrame {
         comboBoxFilter.setBackground(Color.DARK_GRAY);
         comboBoxFilter.setForeground(Color.decode("#C8DCF0"));
         comboBoxFilter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBoxFilter.setFocusable(false);
         GridBagConstraints gbc_comboBoxFilter = new GridBagConstraints();
         gbc_comboBoxFilter.insets = new Insets(0, 0, 5, 0);
         gbc_comboBoxFilter.fill = GridBagConstraints.HORIZONTAL;
@@ -760,6 +798,7 @@ public class Window extends JFrame {
         comboBox_1Filter.setBackground(Color.DARK_GRAY);
         comboBox_1Filter.setForeground(Color.decode("#C8DCF0"));
         comboBox_1Filter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBox_1Filter.setFocusable(false);
         GridBagConstraints gbc_comboBox_1Filter = new GridBagConstraints();
         gbc_comboBox_1Filter.insets = new Insets(0, 0, 5, 0);
         gbc_comboBox_1Filter.fill = GridBagConstraints.HORIZONTAL;
@@ -775,6 +814,7 @@ public class Window extends JFrame {
         comboBox_2Filter.setFont(new Font("Tahoma", Font.PLAIN, textSize));
         comboBox_2Filter.setBackground(Color.DARK_GRAY);
         comboBox_2Filter.setForeground(Color.decode("#C8DCF0"));
+        comboBox_2Filter.setFocusable(false);
         GridBagConstraints gbc_comboBox_2Filter = new GridBagConstraints();
         gbc_comboBox_2Filter.insets = new Insets(0, 0, 5, 0);
         gbc_comboBox_2Filter.fill = GridBagConstraints.HORIZONTAL;
@@ -854,6 +894,7 @@ public class Window extends JFrame {
         btnNames.setForeground(Color.decode("#C8DCF0"));
         btnNames.setBackground(Color.DARK_GRAY);
         btnNames.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        btnNames.setFocusable(false);
         GridBagConstraints gbc_btnNames = new GridBagConstraints();
         gbc_btnNames.gridx = 2;
         gbc_btnNames.gridy = 3;
@@ -899,6 +940,7 @@ public class Window extends JFrame {
         btnSize.setForeground(Color.decode("#C8DCF0"));
         btnSize.setBackground(Color.DARK_GRAY);
         btnSize.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        btnSize.setFocusable(false);
         GridBagConstraints gbc_btnSize = new GridBagConstraints();
         gbc_btnSize.gridx = 2;
         gbc_btnSize.gridy = 7;
@@ -908,6 +950,7 @@ public class Window extends JFrame {
         comboBoxText.setForeground(Color.decode("#C8DCF0"));
         comboBoxText.setBackground(Color.DARK_GRAY);
         comboBoxText.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBoxText.setFocusable(false);
         GridBagConstraints gbc_comboBoxText = new GridBagConstraints();
         gbc_comboBoxText.insets = new Insets(0, 0, 5, 0);
         gbc_comboBoxText.fill = GridBagConstraints.HORIZONTAL;
@@ -923,6 +966,7 @@ public class Window extends JFrame {
         comboBoxLang.setForeground(Color.decode("#C8DCF0"));
         comboBoxLang.setBackground(Color.DARK_GRAY);
         comboBoxLang.setFont(new Font("Tahoma", Font.PLAIN, textSize));
+        comboBoxLang.setFocusable(false);
         GridBagConstraints gbc_comboBoxLang = new GridBagConstraints();
         gbc_comboBoxLang.insets = new Insets(0, 0, 5, 0);
         gbc_comboBoxLang.fill = GridBagConstraints.HORIZONTAL;
@@ -948,13 +992,16 @@ public class Window extends JFrame {
             public void itemStateChanged(ItemEvent e) {
                 if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Small")) {
                     DataHandler.setTextSize(14);
-                    LatestUpdates.addUpdate("Settings", "TextSize", "Small");
+                    LatestUpdates.addUpdate("Settings", "TextSize", "Small", ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                 } else if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Medium")) {
                     DataHandler.setTextSize(18);
-                    LatestUpdates.addUpdate("Settings", "TextSize", "Medium");
+                    LatestUpdates.addUpdate("Settings", "TextSize", "Medium", ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                 } else if(((ComboItem)comboBoxText.getSelectedItem()).value.equals("Large")) {
                     DataHandler.setTextSize(22);
-                    LatestUpdates.addUpdate("Settings", "TextSize", "Large");
+                    LatestUpdates.addUpdate("Settings", "TextSize", "Large", ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                 }
                 updateTable.fireTableDataChanged();
                 lbltextEmpty2.setText(resources.getString("RestartToApplyChanges") + ".");
@@ -965,9 +1012,11 @@ public class Window extends JFrame {
             public void itemStateChanged(ItemEvent e) {
                 if(((ComboItem)comboBoxLang.getSelectedItem()).value.equals("DE")) {
                     DataHandler.setLanguage("de");
-                    LatestUpdates.addUpdate("Settings", "Language", "DE");
+                    LatestUpdates.addUpdate("Settings", "Language", "DE", ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                 } else if(((ComboItem)comboBoxLang.getSelectedItem()).value.equals("EN")) {
-                    LatestUpdates.addUpdate("Settings", "Language", "EN");
+                    LatestUpdates.addUpdate("Settings", "Language", "EN", ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                     DataHandler.setLanguage("en");
                 }
                 updateTable.fireTableDataChanged();
@@ -1143,20 +1192,24 @@ public class Window extends JFrame {
                 if (type.equals("Series")) {
                     seasons = textField_2.getText();
                     DataHandler.addSeries(name, platform, seasons, status);
-                    LatestUpdates.addUpdate("Add", "Series", name);
+                    LatestUpdates.addUpdate("Add", "Series", name, ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                     DataHandler.saveData();
                 } else if (type.equals("Activity")) {
                     seasons = textField_2.getText();
                     DataHandler.addActivity(name, platform, seasons, status);
-                    LatestUpdates.addUpdate("Add", "Activity", name);
+                    LatestUpdates.addUpdate("Add", "Activity", name, ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                     DataHandler.saveData();
                 } else if (type.equals("Game")) {
                     DataHandler.addGame(name, platform, status);
-                    LatestUpdates.addUpdate("Add", "Game", name);
+                    LatestUpdates.addUpdate("Add", "Game", name, ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                     DataHandler.saveData();
                 } else if (type.equals("Movie")) {
                     DataHandler.addMovie(name, platform, status);
-                    LatestUpdates.addUpdate("Add", "Movie", name);
+                    LatestUpdates.addUpdate("Add", "Movie", name, ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                     DataHandler.saveData();
                 }
                 textField.setText("");
@@ -1180,7 +1233,8 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editGame(textFieldEdit.getText(), textField_1Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
-                            LatestUpdates.addUpdate("Edit", "Game", textFieldEdit.getText());
+                            LatestUpdates.addUpdate("Edit", "Game", textFieldEdit.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                             exists = true;
                         } 
                     }
@@ -1189,7 +1243,8 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editMovie(textFieldEdit.getText(), textField_1Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
-                            LatestUpdates.addUpdate("Edit", "Movie", textFieldEdit.getText());
+                            LatestUpdates.addUpdate("Edit", "Movie", textFieldEdit.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                             exists = true;
                         } 
                     }
@@ -1198,7 +1253,8 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editSeries(textFieldEdit.getText(), textField_1Edit.getText(), textField_2Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
-                            LatestUpdates.addUpdate("Edit", "Series", textFieldEdit.getText());
+                            LatestUpdates.addUpdate("Edit", "Series", textFieldEdit.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                             exists = true;
                         } 
                     }
@@ -1207,7 +1263,8 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.editActivity(textFieldEdit.getText(), textField_1Edit.getText(), textField_2Edit.getText(), textField_3Edit.getText());
                             DataHandler.saveData();
-                            LatestUpdates.addUpdate("Edit", "Activity", textFieldEdit.getText());
+                            LatestUpdates.addUpdate("Edit", "Activity", textFieldEdit.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                             exists = true;
                         } 
                     }
@@ -1218,7 +1275,8 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Game");
                             DataHandler.saveData();
-                            LatestUpdates.addUpdate("Delete", "Game", textFieldEdit.getText());
+                            LatestUpdates.addUpdate("Delete", "Game", textFieldEdit.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                             exists = true;
                         } 
                     }
@@ -1227,7 +1285,8 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Movie");
                             DataHandler.saveData();
-                            LatestUpdates.addUpdate("Delete", "Movie", textFieldEdit.getText());
+                            LatestUpdates.addUpdate("Delete", "Movie", textFieldEdit.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                             exists = true;
                         } 
                     }
@@ -1236,7 +1295,8 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Series");
                             DataHandler.saveData();
-                            LatestUpdates.addUpdate("Delete", "Series", textFieldEdit.getText());
+                            LatestUpdates.addUpdate("Delete", "Series", textFieldEdit.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                             exists = true;
                         } 
                     }
@@ -1245,7 +1305,8 @@ public class Window extends JFrame {
                         if ( n.equals(textFieldEdit.getText())) {
                             DataHandler.deleteEntry(textFieldEdit.getText(), "Activity");
                             DataHandler.saveData();
-                            LatestUpdates.addUpdate("Delete", "Activity", textFieldEdit.getText());
+                            LatestUpdates.addUpdate("Delete", "Activity", textFieldEdit.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
                             exists = true;
                         } 
                     }
@@ -1268,10 +1329,29 @@ public class Window extends JFrame {
             }
         });
         
+        btnPath.addActionListener(e -> {
+            String currentName = ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0]));
+            String nextPath = DataHandler.getNextPath();
+            btnPath.setText(resources.getString("FILE") + ": " + nextPath);
+            lblTextbox.setText(" " + resources.getString("Owner") + ": " 
+                    + ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
+            LatestUpdates.addUpdate(resources.getString("FileChanged"), resources.getString("Loaded") + ": " 
+                    + ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])), nextPath, currentName);
+            gameTable.fireTableDataChanged();
+            seriesTable.fireTableDataChanged();
+            movieTable.fireTableDataChanged();
+            activityTable.fireTableDataChanged();
+            updateTable.fireTableDataChanged();
+        });
+        
         btnSize.addActionListener(e -> {
             Rectangle r = this.getBounds();
             DataHandler.setWindowSize(r.width, r.height);
-            LatestUpdates.addUpdate("Settings", "WindowSize", "X: " + r.width + ", Y: " + r.height);
+            LatestUpdates.addUpdate("Settings", "WindowSize", "X: " + r.width + ", Y: " + r.height, ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
             updateTable.fireTableDataChanged();
             lbltextEmpty2.setText(resources.getString("SizeSaved") + ": X: " + r.width + " , Y: " + r.height);
         });
@@ -1342,7 +1422,8 @@ public class Window extends JFrame {
         
         btnNames.addActionListener(e -> {
             DataHandler.setNames(textFieldName1.getText(), textFieldName2.getText());
-            LatestUpdates.addUpdate("Settings", "ChangeNames", "1: " + textFieldName1.getText() + " 2: " + textFieldName2.getText());
+            LatestUpdates.addUpdate("Settings", "ChangeNames", "1: " + textFieldName1.getText() + " 2: " + textFieldName2.getText(), ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                    : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
             updateTable.fireTableDataChanged();
             textFieldName1.setText("");
             textFieldName2.setText("");

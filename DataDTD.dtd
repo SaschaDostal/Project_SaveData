@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT Data ((Game|Series|Movie)*)>
+<!ELEMENT Data (Settings, (Game|Series|Movie|Activity)*)>
+    <!ELEMENT Settings (Name1, Name2, TextSize, SizeX, SizeY, Language)>
+       <!ELEMENT Name1 (#PCDATA)>
+       <!ELEMENT Name2 (#PCDATA)>
+       <!ELEMENT TextSize (#PCDATA)>
+       <!ELEMENT SizeX (#PCDATA)>
+       <!ELEMENT SizeY (#PCDATA)>
+       <!ELEMENT Language (#PCDATA)>
     <!ELEMENT Game (GName, GPlatform, GStatus)>
 	   <!ELEMENT GName (#PCDATA)>
 	   <!ELEMENT GPlatform (#PCDATA)>
@@ -13,3 +20,8 @@
        <!ELEMENT MName (#PCDATA)>
        <!ELEMENT Suggested (#PCDATA)>
        <!ELEMENT MStatus (#PCDATA)>
+    <!ELEMENT Activity (Description, Location, Category, AStatus)>
+       <!ELEMENT Description (#PCDATA)>
+       <!ELEMENT Location (#PCDATA)>
+       <!ELEMENT Category (#PCDATA)>
+       <!ELEMENT AStatus (#PCDATA)>

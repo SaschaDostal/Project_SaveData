@@ -13,6 +13,8 @@ public class UpdateTable extends AbstractTableModel {
             return Window.resources.getString("Object");
         } else if (column == 2) {
             return Window.resources.getString("Label");
+        } else if (column == 3) {
+            return Window.resources.getString("DataOf");
         } else {
             return "Error";
         }
@@ -32,7 +34,7 @@ public class UpdateTable extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 3;
+        return 4;
     }
 
     @Override
