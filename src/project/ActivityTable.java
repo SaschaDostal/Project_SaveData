@@ -1,5 +1,7 @@
 package project;
 
+import java.util.Arrays;
+
 import javax.swing.table.AbstractTableModel;
 
 public class ActivityTable extends AbstractTableModel{
@@ -54,6 +56,8 @@ public class ActivityTable extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return DataHandler.translateIfPossible(DataHandler.getActivities(status, location, category)[rowIndex][columnIndex]);
+        String[][] arr = DataHandler.getActivities(status, location, category);
+        Arrays.sort(arr, new ArrayCompare());
+        return DataHandler.translateIfPossible(arr[rowIndex][columnIndex]);
     }
 }

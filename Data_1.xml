@@ -5,7 +5,7 @@
         <Name1>Sascha</Name1>
         <Name2>Saskia</Name2>
         <TextSize>18</TextSize>
-        <SizeX>872</SizeX>
+        <SizeX>896</SizeX>
         <SizeY>566</SizeY>
         <Language>de</Language>
     </Settings>
@@ -87,4 +87,41 @@
         <Seasons/>
         <SStatus/>
     </Series>
+    <Activity>
+        <Description>TestActivity</Description>
+        <Location/>
+        <Category/>
+        <AStatus/>
+    </Activity>
+    <Activity>
+        <Description>TestActivity1</Description>
+        <Location/>
+        <Category/>
+        <AStatus>Pending</AStatus>
+    </Activity>
+    <Game>
+        <GName>Testitest</GName>
+        <GPlatform/>
+        <GStatus/>
+    </Game>
+    <Game>
+        <GName>Endgame</GName>
+        <GPlatform>PS4</GPlatform>
+        <GStatus>Finished</GStatus>
+    </Game>
+    <Game>
+        <GName>EA Games</GName>
+        <GPlatform>PC</GPlatform>
+        <GStatus>Pending</GStatus>
+    </Game>
+    <Movie>
+        <MName>Abba</MName>
+        <Suggested>Sascha</Suggested>
+        <MStatus>Pending</MStatus>
+    </Movie>
+    <Movie>
+        <MName>Zeus</MName>
+        <Suggested>Saskia</Suggested>
+        <MStatus>Pending</MStatus>
+    </Movie>
 </Data>

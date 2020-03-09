@@ -23,7 +23,7 @@ public class UpdateTable extends AbstractTableModel {
     @Override
     public int getRowCount() {
         int i = 0;
-        while(i < 10) {
+        while(i < 20) {
             if(LatestUpdates.updates[i][0] == null) {
                 break;
             }

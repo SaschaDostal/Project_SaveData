@@ -1,5 +1,7 @@
 package project;
 
+import java.util.Arrays;
+
 import javax.swing.table.AbstractTableModel;
 
 public class SeriesTable extends AbstractTableModel{
@@ -47,21 +49,17 @@ public class SeriesTable extends AbstractTableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (filter == Filter.ALL) {
-            if (columnIndex == 0) {
-                return DataHandler.getElements("SName")[rowIndex];
-            } else if (columnIndex == 1) {
-                return DataHandler.getElements("SPlatform")[rowIndex];
-            } else if (columnIndex == 2) {
-                return DataHandler.getElements("Seasons")[rowIndex];
-            } else if (columnIndex == 3) {
-                return DataHandler.translateIfPossible(DataHandler.getElements("SStatus")[rowIndex]);
-            } else {
-                return "error";
-            }
+            String[][] all = ArrayCompare.transpose(new String[][] {DataHandler.getElements("SName"), DataHandler.getElements("SPlatform"), DataHandler.getElements("Seasons"), DataHandler.getElements("SStatus")});
+            Arrays.sort(all, new ArrayCompare());
+            return DataHandler.translateIfPossible(all[rowIndex][columnIndex]);
         } else if (filter == Filter.FINISHED) {
-            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Series", true)[rowIndex][columnIndex]);
+            String[][] finished = DataHandler.getFinishedElements("Series", true);
+            Arrays.sort(finished, new ArrayCompare());
+            return DataHandler.translateIfPossible(finished[rowIndex][columnIndex]);
         } else if (filter == Filter.PENDING) {
-            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Series", false)[rowIndex][columnIndex]);
+            String[][] pending = DataHandler.getFinishedElements("Series", false);
+            Arrays.sort(pending, new ArrayCompare());
+            return DataHandler.translateIfPossible(pending[rowIndex][columnIndex]);
         } else {
             return null;
         }

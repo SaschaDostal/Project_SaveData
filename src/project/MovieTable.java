@@ -1,5 +1,7 @@
 package project;
 
+import java.util.Arrays;
+
 import javax.swing.table.AbstractTableModel;
 
 public class MovieTable extends AbstractTableModel {
@@ -14,9 +16,9 @@ public class MovieTable extends AbstractTableModel {
     public String getColumnName(int column) {
         if (column == 0) {
             return Window.resources.getString("Name");
-        } else if (column == 1) {
+        } else if (column == 1 && !(DataHandler.getElements("Name2")[0] == "")) {
             return Window.resources.getString("Suggested");
-        } else if (column == 2) {
+        } else if (column == 2 || (column == 1 && (DataHandler.getElements("Name2")[0] == ""))) {
             return Window.resources.getString("Status");
         } else {
             return "Error";
@@ -38,25 +40,38 @@ public class MovieTable extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
+        if((DataHandler.getElements("Name2")[0] == "")) {
+            return 2;
+        }
         return 3;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (filter == Filter.ALL) {
-            if (columnIndex == 0) {
-                return DataHandler.getElements("MName")[rowIndex];
-            } else if (columnIndex == 1) {
-                return DataHandler.getElements("Suggested")[rowIndex];
-            } else if (columnIndex == 2) {
-                return DataHandler.translateIfPossible(DataHandler.getElements("MStatus")[rowIndex]);
+            String[][] all = ArrayCompare.transpose(new String[][] {DataHandler.getElements("MName"), DataHandler.getElements("Suggested"), DataHandler.getElements("MStatus")});
+            Arrays.sort(all, new ArrayCompare());
+            if (DataHandler.getElements("Name2")[0] == "" && columnIndex == 1) {
+                return DataHandler.translateIfPossible(all[rowIndex][columnIndex+1]);
             } else {
-                return "error";
+                return DataHandler.translateIfPossible(all[rowIndex][columnIndex]);
             }
         } else if (filter == Filter.FINISHED) {
-            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Movie", true)[rowIndex][columnIndex]);
+            String[][] finished = DataHandler.getFinishedElements("Movie", true);
+            Arrays.sort(finished, new ArrayCompare());
+            if(DataHandler.getElements("Name2")[0] == "" && columnIndex == 1) {
+                return DataHandler.translateIfPossible(finished[rowIndex][columnIndex+1]);
+            } else {
+                return DataHandler.translateIfPossible(finished[rowIndex][columnIndex]);
+            }
         } else if (filter == Filter.PENDING) {
-            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Movie", false)[rowIndex][columnIndex]);
+            String[][] pending = DataHandler.getFinishedElements("Movie", false);
+            Arrays.sort(pending, new ArrayCompare());
+            if(DataHandler.getElements("Name2")[0] == "" && columnIndex == 1) {
+                return DataHandler.translateIfPossible(pending[rowIndex][columnIndex+1]);
+            } else {
+                return DataHandler.translateIfPossible(pending[rowIndex][columnIndex]);
+            }
         } else {
             return null;
         }

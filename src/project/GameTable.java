@@ -1,5 +1,7 @@
 package project;
 
+import java.util.Arrays;
+
 import javax.swing.table.AbstractTableModel;
 
 public class GameTable extends AbstractTableModel {
@@ -41,23 +43,21 @@ public class GameTable extends AbstractTableModel {
     public int getColumnCount() {
         return 3;
     }
-
+  
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         if (filter == Filter.ALL) {
-            if (columnIndex == 0) {
-                return DataHandler.getElements("GName")[rowIndex];
-            } else if (columnIndex == 1) {
-                return DataHandler.getElements("GPlatform")[rowIndex];
-            } else if (columnIndex == 2) {
-                return DataHandler.translateIfPossible(DataHandler.getElements("GStatus")[rowIndex]);
-            } else {
-                return "error";
-            }
+            String[][] all = ArrayCompare.transpose(new String[][] {DataHandler.getElements("GName"), DataHandler.getElements("GPlatform"), DataHandler.getElements("GStatus")});
+            Arrays.sort(all, new ArrayCompare());
+            return DataHandler.translateIfPossible(all[rowIndex][columnIndex]);
         } else if (filter == Filter.FINISHED) {
-            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Game", true)[rowIndex][columnIndex]);
+            String[][] finished = DataHandler.getFinishedElements("Game", true);
+            Arrays.sort(finished, new ArrayCompare());
+            return DataHandler.translateIfPossible(finished[rowIndex][columnIndex]);
         } else if (filter == Filter.PENDING) {
-            return DataHandler.translateIfPossible(DataHandler.getFinishedElements("Game", false)[rowIndex][columnIndex]);
+            String[][] pending = DataHandler.getFinishedElements("Game", false);
+            Arrays.sort(pending, new ArrayCompare());
+            return DataHandler.translateIfPossible(pending[rowIndex][columnIndex]);
         } else {
             return null;
         }

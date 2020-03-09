@@ -2,6 +2,7 @@ package project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.MissingResourceException;
 import java.util.stream.Stream;
 
@@ -111,6 +112,7 @@ public class DataHandler {
             games[i][1] = getElements("GPlatform")[i];
             games[i][2] = getElements("GStatus")[i];
         }
+        Arrays.sort(games, new ArrayCompare());
         String[][] series = new String[getElements("SName").length][4];
         for(int i = 0; i < series.length; i++) {
             series[i][0] = getElements("SName")[i];
@@ -118,14 +120,16 @@ public class DataHandler {
             series[i][2] = getElements("Seasons")[i];
             series[i][3] = getElements("SStatus")[i];
         }
+        Arrays.sort(series, new ArrayCompare());
         String[][] movies = new String[getElements("MName").length][3];
         for(int i = 0; i < movies.length; i++) {
             movies[i][0] = getElements("MName")[i];
             movies[i][1] = getElements("Suggested")[i];
             movies[i][2] = getElements("MStatus")[i];
         }
+        Arrays.sort(movies, new ArrayCompare());
         String[][] activities = getActivities("All", "All", "All");
-        
+        Arrays.sort(activities, new ArrayCompare());
         String[][] all = new String[games.length + series.length + movies.length + activities.length][5];
         
         for(int i = 0; i < games.length; i++) {
@@ -498,7 +502,7 @@ public class DataHandler {
         saveData();
     }
     
-    public static void saveData() {
+    public static void exportData() {
         try {
             DOMSource domSource = new DOMSource(doc);
             StreamResult streamResult = new StreamResult(new File(FILEPATH_IN));
@@ -514,19 +518,26 @@ public class DataHandler {
         } catch (TransformerException e) {
             e.printStackTrace();
         } finally {
-            int games = DataHandler.getElements("GName").length;
-            int series = DataHandler.getElements("SName").length;
-            int movies = DataHandler.getElements("MName").length;
-            int activities = DataHandler.getElements("Description").length;
-            Window.labelTotal.setText(String.valueOf(games + series + movies + activities));
-            Window.label_GameCounter.setText(String.valueOf(games));
-            Window.label_SeriesCounter.setText(String.valueOf(series)); 
-            Window.label_MovieCounter.setText(String.valueOf(movies));
-            Window.label_ActivityCounter.setText(String.valueOf(activities));
-            Window.lblTextbox.setText(" " + Window.resources.getString("Owner") + ": " 
-                    + ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
-                            : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
+            Window.unsavedChanges = 0;
+            Window.btnSave.setEnabled(false);
+            Window.lblToSave.setText(Window.resources.getString("ChangesToSave") + ": " + Window.unsavedChanges + " ");
+            LatestUpdates.updates = new String[20][4];
         }
+    }
+    
+    public static void saveData() {
+        int games = DataHandler.getElements("GName").length;
+        int series = DataHandler.getElements("SName").length;
+        int movies = DataHandler.getElements("MName").length;
+        int activities = DataHandler.getElements("Description").length;
+        Window.labelTotal.setText(String.valueOf(games + series + movies + activities));
+        Window.label_GameCounter.setText(String.valueOf(games));
+        Window.label_SeriesCounter.setText(String.valueOf(series)); 
+        Window.label_MovieCounter.setText(String.valueOf(movies));
+        Window.label_ActivityCounter.setText(String.valueOf(activities));
+        Window.lblTextbox.setText(" " + Window.resources.getString("Owner") + ": " 
+                + ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
+                        : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));
     }
     
     public static void setNames(String name1, String name2) {
