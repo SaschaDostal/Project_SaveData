@@ -59,15 +59,7 @@ public class DataHandler {
             }
         }
         read();
-        int games = DataHandler.getElements("GName").length;
-        int series = DataHandler.getElements("SName").length;
-        int movies = DataHandler.getElements("MName").length;
-        int activities = DataHandler.getElements("Description").length;
-        Window.labelTotal.setText(String.valueOf(games + series + movies + activities));
-        Window.label_GameCounter.setText(String.valueOf(games));
-        Window.label_SeriesCounter.setText(String.valueOf(series)); 
-        Window.label_MovieCounter.setText(String.valueOf(movies));
-        Window.label_ActivityCounter.setText(String.valueOf(activities));
+        saveData();
         
         NodeList startPath = paths.getElementsByTagName("Start");
         startPath.item(0).setTextContent(FILEPATH_IN);
@@ -530,11 +522,17 @@ public class DataHandler {
         int series = DataHandler.getElements("SName").length;
         int movies = DataHandler.getElements("MName").length;
         int activities = DataHandler.getElements("Description").length;
-        Window.labelTotal.setText(String.valueOf(games + series + movies + activities));
-        Window.label_GameCounter.setText(String.valueOf(games));
-        Window.label_SeriesCounter.setText(String.valueOf(series)); 
-        Window.label_MovieCounter.setText(String.valueOf(movies));
-        Window.label_ActivityCounter.setText(String.valueOf(activities));
+        int gamesP = DataHandler.getFinishedElements("Game", false).length;
+        int seriesP = DataHandler.getFinishedElements("Series", false).length;
+        int moviesP = DataHandler.getFinishedElements("Movie", false).length;
+        int activitiesP = DataHandler.getFinishedElements("Activity", false).length;
+        
+        Window.labelTotal.setText(String.valueOf(games + series + movies + activities) + " (" + (gamesP + seriesP + moviesP + activitiesP)
+                + " " + Window.resources.getString("Pending") + ")");
+        Window.label_GameCounter.setText(String.valueOf(games) + " (" + gamesP + " " + Window.resources.getString("Pending") + ")");
+        Window.label_SeriesCounter.setText(String.valueOf(series) + " (" + seriesP + " " + Window.resources.getString("Pending") + ")"); 
+        Window.label_MovieCounter.setText(String.valueOf(movies) + " (" + moviesP + " " + Window.resources.getString("Pending") + ")");
+        Window.label_ActivityCounter.setText(String.valueOf(activities) + " (" + activitiesP + " " + Window.resources.getString("Pending") + ")");
         Window.lblTextbox.setText(" " + Window.resources.getString("Owner") + ": " 
                 + ((DataHandler.getElements("Name2")[0] == "") ? (DataHandler.getElements("Name1")[0])
                         : (DataHandler.getElements("Name1")[0] + ", " + DataHandler.getElements("Name2")[0])));

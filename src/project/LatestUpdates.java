@@ -1,10 +1,13 @@
 package project;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class LatestUpdates {
     protected static String[][] updates = new String[20][4];
     
-    public static void addUpdate(String update, String object, String name, String data){
-        if(!(update.equals(updates[0][0]) && object.equals(updates[0][1]) && name.equals(updates[0][2]) && data.equals(updates[0][3]))) {
+    public static void addUpdate(String update, String object, String name){
+        if(!(update.equals(updates[0][0]) && object.equals(updates[0][1]) && name.equals(updates[0][2]))) {
             Window.lblToSave.setText(Window.resources.getString("ChangesToSave") + ": " + ++Window.unsavedChanges + " ");
             Window.lblStartSett.setText(" " + Window.resources.getString("CurrentSettings") + ": "
                     + Window.resources.getString("Language") + " [" + DataHandler.getElements("Language")[0] + "], "
@@ -24,10 +27,11 @@ public class LatestUpdates {
                 updates[i][2] = updates[i-1][2];
                 updates[i][3] = updates[i-1][3];
             }
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
             updates[0][0] = update;
             updates[0][1] = object;
             updates[0][2] = name;
-            updates[0][3] = data;
+            updates[0][3] = format.format(new Date());
         }
     }
 }
